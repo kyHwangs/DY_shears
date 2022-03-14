@@ -1,0 +1,11 @@
+#Configuration file for warden and mgrow_baobab
+#This file must be located in the same directory than warden and multigrow
+#scripts.
+
+#List of production directories to act on
+dirs="\
+/afs/cern.ch/user/s/shearsop/work/baobab-prod/13TeV_25ns/MC"
+
+#/afs/cern.ch/user/s/shearsop/work/baobab-prod/13TeV_2016/Data"
+#/afs/cern.ch/user/s/shearsop/work/baobab-prod/13TeV_25ns_silver/Data \
+

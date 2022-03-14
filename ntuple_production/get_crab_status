@@ -1,0 +1,44 @@
+#!/usr/bin/env python
+"""
+Command to check status of every crab tasks of current directory. The script looks for crab_* directory and jobs_ok file. For each directory if the corresponding tak is not listed in the jobs_ok it checks its status using the "crab status" command. If the task is completed it is added to the jobs_ok file.
+"""
+
+import argparse
+import glob
+import os.path
+try:
+    from CRABAPI.RawCommand import crabCommand
+    from CRABClient.ClientExceptions import ClientException, TaskNotFoundException, CachefileNotFoundException, ConfigurationException, ConfigException, UsernameException, ProxyException
+except ImportError:
+    sys.stderr.write("\nFatal error: CRAB 3 environment needs to be set before running this script.\n")
+    sys.exit(1)
+
+#parser = argparse.ArgumentParser(description='Check job status')
+#args = parser.parse_args()
+
+for d in glob.glob("crab_*"):
+    if not os.path.isdir(d):
+        continue
+    try:
+        f = open("jobs_ok")
+        already_ok = False
+        for l in f:
+            if l.strip() == d:
+                already_ok = True
+                continue
+            #endif
+        #next f
+        f.close()
+        if already_ok:
+            continue
+    except IOError:
+        pass
+    print "Checking status of %s" % d
+    res = crabCommand("status", "-d", d)
+    if res["status"] == "COMPLETED":
+        f = open("jobs_ok", "a")
+        f.write(d + "\n")
+        f.close()
+        print "%s appended to jobs_ok file." % d
+     #endif
+#next d

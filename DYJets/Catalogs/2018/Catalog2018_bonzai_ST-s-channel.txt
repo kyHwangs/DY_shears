@@ -1,0 +1,15 @@
+#primary dataset: /ST_s-channel_4f_leptonDecays_TuneCP5_13TeV-amcatnlo-pythia8/RunIISummer20UL18NanoAODv9-106X_upgrade2018_realistic_v16_L1v1-v1/NANOAODSIM 
+* datatype: background
+* primary events: 19365999
+* primary files: 1
+* lumi: -1
+* sample xsec: 10.32
+
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2018/background/NanoBonzai13dec_bg_ST_s-channel_2018UL/ST_s-channel_4f_leptonDecays_TuneCP5_13TeV-amcatnlo-pythia8/NanoTestPost/211213_084256/0000/tree_1.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2018/background/NanoBonzai13dec_bg_ST_s-channel_2018UL/ST_s-channel_4f_leptonDecays_TuneCP5_13TeV-amcatnlo-pythia8/NanoTestPost/211213_084256/0000/tree_2.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2018/background/NanoBonzai13dec_bg_ST_s-channel_2018UL/ST_s-channel_4f_leptonDecays_TuneCP5_13TeV-amcatnlo-pythia8/NanoTestPost/211213_084256/0000/tree_3.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2018/background/NanoBonzai13dec_bg_ST_s-channel_2018UL/ST_s-channel_4f_leptonDecays_TuneCP5_13TeV-amcatnlo-pythia8/NanoTestPost/211213_084256/0000/tree_4.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2018/background/NanoBonzai13dec_bg_ST_s-channel_2018UL/ST_s-channel_4f_leptonDecays_TuneCP5_13TeV-amcatnlo-pythia8/NanoTestPost/211213_084256/0000/tree_5.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2018/background/NanoBonzai13dec_bg_ST_s-channel_2018UL/ST_s-channel_4f_leptonDecays_TuneCP5_13TeV-amcatnlo-pythia8/NanoTestPost/211213_084256/0000/tree_6.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2018/background/NanoBonzai13dec_bg_ST_s-channel_2018UL/ST_s-channel_4f_leptonDecays_TuneCP5_13TeV-amcatnlo-pythia8/NanoTestPost/211213_084256/0000/tree_7.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2018/background/NanoBonzai13dec_bg_ST_s-channel_2018UL/ST_s-channel_4f_leptonDecays_TuneCP5_13TeV-amcatnlo-pythia8/NanoTestPost/211213_084256/0000/tree_8.root

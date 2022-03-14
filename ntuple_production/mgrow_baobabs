@@ -1,0 +1,36 @@
+#!/bin/bash
+
+myself="`readlink -f "$0"`"
+mybasename="`basename "$myself"`"
+mydir="`dirname "$myself"`"
+
+source "$mydir/prodrc"
+
+die(){
+    echo "$@" 1>&2
+    exit 2
+}
+
+if [ -z "$1" -o "$1" = -h -o "$1" = --help ]; then
+    cat <<EOF
+Runs the grow_baobab commands in each directory defined in $mydir/prodrc under dirs."
+
+EOF
+exit 0
+fi
+
+underline(){
+    sed 'p
+s/./-/g'
+}
+
+for d in $dirs; do
+    (
+	if cd $d ; then
+echo "Directory $d" | underline
+echo
+	    $mydir/grow_baobabs "$@"
+echo	    
+	fi
+    )
+done

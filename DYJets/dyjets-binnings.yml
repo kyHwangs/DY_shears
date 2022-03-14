@@ -1,0 +1,101 @@
+# Binning file for the dyjets analyzer
+#
+# This file defines the binnings of histograms when the dyjets analyzer is used.
+#
+# The sole mandatory field is the "selector", containing a regex that is matched
+# against plot names. When a plot name matches the regex, properties listed in
+# other fields are assigned to it. Rules lower in the list take precedence over
+# the ones above them.
+#
+# The 'binning' field defines the method used to select a binning. It can take
+# the following values:
+#
+#   ignored (default): The contents of this file is ignored and the binning is
+#                      taken from a declare() statement (an error is thrown if
+#                      the histogram wasn't declared).
+#
+#   uniform: The binning is uniform between 'binning min' and 'binning max',
+#            with 100 or 'bin count' bins.
+#
+#   custom: Bin edges are taken form the 'bin edges' array.
+#
+
+################################################################################
+# Mass
+################################################################################
+
+# On-shell
+- selector: 'mass.*'
+  binning: uniform
+  binning min: 71
+  binning max: 111
+#  bin count: 40
+  bin count: 120
+# Wide range
+- selector: 'mass_wide_range.*'
+  binning: custom
+  #bin edges: [ 50, 71, 111, 170, 350 ]
+  bin edges: [
+    20, 35, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 105, 110, 115, 120,
+    125, 130, 135, 140, 145, 150, 160, 170, 180, 190, 200, 220, 240, 260, 280,
+    300, 320, 340, 360, 380, 400, 420, 440, 460, 480, 500, 520, 540, 560, 580,
+    600, 630, 660, 690, 720, 750, 780, 810, 840, 870, 900, 940, 980, 1020, 1060,
+    1100, 1140, 1180, 1220, 1250, 1300, 1350, 1400, 1450, 1500, 1550, 1600,
+    1660, 1720, 1780, 1840, 1900, 1980, 2060, 2140 ]
+
+################################################################################
+# p_T
+################################################################################
+
+# Default binning, 0 jet
+- selector: 'pt_(inc|exc)0jet.*'
+  binning: custom
+  bin edges: [
+    0, 2, 4, 6, 8, 10, 12, 14, 18, 22, 28, 37, 52, 85, 160, 240, 1000 ]
+
+# Default binning, 1 and 2 jets
+- selector: 'pt_(inc|exc)[12]jet.*'
+  binning: custom
+  bin edges: [ 0, 4, 8, 12, 18, 22, 28, 37, 52, 85, 160, 240, 1000 ]
+
+# Highest mass range, 0 jet
+#- selector: 'pt_(inc|exc)0jet_mass250_320.*'
+  #binning: custom
+  #bin edges: [ 0, 2.5, 5, 7.5, 10, 13, 18, 22, 28, 40, 90, 200, 1000 ]
+
+# Highest mass range, 1 and 2 jets
+#- selector: 'pt_(inc|exc)[12]jet_mass250_320.*'
+  #binning: custom
+  #bin edges: [ 0,  8,  18, 22, 28, 37, 52, 85, 160, 240, 1000 ]
+
+# On-shell, 0, 1 and 2 jets
+- selector: 'pt_(inc|exc)[012]jet_mass71_111.*'
+  binning: custom
+  bin edges: [
+    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 18, 20, 22, 25, 28,
+    32, 37, 43, 52, 65, 85, 120, 160, 190, 220, 250, 300, 350, 400, 450, 500,
+    1000 ]
+
+################################################################################
+# phi*
+################################################################################
+
+# All
+- selector: 'phistar.*'
+  binning: custom
+  bin edges: [
+    0.000, 0.004, 0.008, 0.012, 0.016, 0.020, 0.024, 0.029, 0.034, 0.039, 0.045,
+    0.051, 0.057, 0.064, 0.072, 0.081, 0.091, 0.102, 0.114, 0.128, 0.145, 0.165,
+    0.189, 0.219, 0.258, 0.312, 0.391, 0.524, 0.695, 0.918, 1.153, 1.496, 1.947,
+    2.522, 3.277 ]
+
+################################################################################
+# Decay cos(theta)
+################################################################################
+
+# All
+- selector: 'decay_costheta.*'
+  binning: uniform
+  binning min: -1
+  binning max: 1
+  bin count: 20

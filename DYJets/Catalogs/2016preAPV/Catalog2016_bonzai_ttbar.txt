@@ -1,0 +1,25 @@
+#primary dataset: /TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/RunIISummer20UL16NanoAODv9-106X_mcRun2_asymptotic_v17-v1/NANOAODSIM
+* datatype: background
+* primary events: 1
+* primary files: 17
+* lumi: -1
+* sample xsec: 88.29
+# https://cms-gen-dev.cern.ch/xsdb/?columns=67108863&currentPage=0&pageSize=10&searchQuery=DAS%3DTTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8
+
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/background/NanoBonzai18oct_bg_ttbar_preVFP/TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/NanoTestPost/211018_130026/0000/tree_1.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/background/NanoBonzai18oct_bg_ttbar_preVFP/TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/NanoTestPost/211018_130026/0000/tree_2.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/background/NanoBonzai18oct_bg_ttbar_preVFP/TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/NanoTestPost/211018_130026/0000/tree_3.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/background/NanoBonzai18oct_bg_ttbar_preVFP/TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/NanoTestPost/211018_130026/0000/tree_4.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/background/NanoBonzai18oct_bg_ttbar_preVFP/TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/NanoTestPost/211018_130026/0000/tree_5.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/background/NanoBonzai18oct_bg_ttbar_preVFP/TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/NanoTestPost/211018_130026/0000/tree_6.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/background/NanoBonzai18oct_bg_ttbar_preVFP/TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/NanoTestPost/211018_130026/0000/tree_7.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/background/NanoBonzai18oct_bg_ttbar_preVFP/TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/NanoTestPost/211018_130026/0000/tree_8.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/background/NanoBonzai18oct_bg_ttbar_preVFP/TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/NanoTestPost/211018_130026/0000/tree_9.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/background/NanoBonzai18oct_bg_ttbar_preVFP/TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/NanoTestPost/211018_130026/0000/tree_10.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/background/NanoBonzai18oct_bg_ttbar_preVFP/TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/NanoTestPost/211018_130026/0000/tree_11.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/background/NanoBonzai18oct_bg_ttbar_preVFP/TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/NanoTestPost/211018_130026/0000/tree_12.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/background/NanoBonzai18oct_bg_ttbar_preVFP/TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/NanoTestPost/211018_130026/0000/tree_13.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/background/NanoBonzai18oct_bg_ttbar_preVFP/TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/NanoTestPost/211018_130026/0000/tree_14.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/background/NanoBonzai18oct_bg_ttbar_preVFP/TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/NanoTestPost/211018_130026/0000/tree_15.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/background/NanoBonzai18oct_bg_ttbar_preVFP/TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/NanoTestPost/211018_130026/0000/tree_16.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/background/NanoBonzai18oct_bg_ttbar_preVFP/TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/NanoTestPost/211018_130026/0000/tree_17.root

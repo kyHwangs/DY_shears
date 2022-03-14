@@ -1,0 +1,313 @@
+# This is the configuration file for the Higgs analysis, year 2016.
+# Please keep it organized, and don't delete comments.
+
+# Options related to output and logs
+log:
+    # Whether to use colors in the terminal.
+    #Possible values: yes|no|auto (default: auto)
+    color: auto
+
+    # Controls what's printed to the screen.
+    # Possible values: debug|info|warn|error|fatal (default: info)
+    log level: info
+
+    # Pipe logs to the given log file, comment out for no log.
+    log file: log16.txt
+
+    # Controls what's written in the log file.
+    # Possible values: debug|info|warn|error|fatal (default: debug)
+    log file level: debug
+
+    # Whether to override ROOT's default log handler.
+    # Default value: yes
+    #override root handler: yes
+
+# Whether to use pileup reweighing
+# Default value: true
+use pileup reweighing: true
+
+# Year (used for pileup)
+year: 2016
+
+# Options related to the selection of jets
+jets:
+    # Pt cut [GeV]
+    # Default value: 30
+    pt: 30
+
+    # Rapidity cut
+    # Default value: 2.4
+    rapidity: 2.4
+
+    # PU MVA cut
+    # Default value: -0.2
+    pu mva: -0.2
+
+    # deltaR(jet, lepton) cut
+    # Default value: 0.4
+    lepton delta r: 0.4
+
+# Options of the b jet veto
+b jet veto:
+    # Whether to cut events with b jets
+    # Default value: yes
+    use: no
+
+    # Working point; see the b tagging POG TWiki for recommended working points
+    # Allowed values: loose, medium, tight
+    # Default value: loose
+    working point: loose
+
+    # Location of the scale factors csv file. Interpreted relative to the
+    # EfficiencyTables/ directory.
+    # Default value: CSVv2_Moriond17_B_H.csv
+    scale factor path: CSVv2_Moriond17_B_H.csv
+
+# Options related to the selection of electrons
+electrons:
+    # Pt cut [GeV]
+    # Default value: 20
+    pt: 5
+
+    # Eta cut
+    # Default value: 2.4
+    eta: 2.4
+
+    # Relative isolation cut
+    # Default value: 0.25
+    isolation: 0.15
+
+    # Id
+    # Possible values: loose, medium, tight
+    # Default value: tight
+    id: loose
+
+    # Whether to use the identification scale factors
+    # Default value: yes
+    use id scale factors: yes
+
+    # Whether to use the reconstruction scale factors
+    # Default value: yes
+    use reconstruction scale factors: yes
+
+# Options related to the selection of muons
+muons:
+    # Pt cut [GeV]
+    # Default value: 20
+    pt: 5
+
+    # Eta cut
+    # Default value: 2.4
+    eta: 2.4
+
+    # Relative isolation cut
+    # Default value: 0.25
+    isolation: 0.25
+
+    # Id
+    # Possible values: loose, medium, tight
+    # Default value: tight
+    id: loose
+
+    # Whether to use the identification scale factors
+    # Default value: yes
+    use id scale factors: yes
+
+    # Whether to use the isolation scale factors
+    # Default value: yes
+    use isolation scale factors: yes
+
+    # Whether to use the tracking scale factors
+    # Default value: yes
+    use tracking scale factors: yes
+
+    # Whether to use Rochester correction
+    # Default value: yes
+    use rochester correction: yes
+
+    # Path to the directory containing tables for Rochester corrections. Interpreted relative to
+    # the EfficiencyTables/ directory.
+    # Default value: rcdata.2016.v3
+    rochester correction path: rcdata.2016.v3
+
+# Good Z boson settings
+good Z:
+    # Low mass bound [GeV]
+    # Default value: 0
+    low mass: 40
+
+    # High mass bound [GeV]
+    # Default value: infinity
+    high mass: 120
+
+    # Charge check mode
+    # Possible values:
+    #   - none: No check
+    #   - neutral: Keep only lepton pairs of opposite sign
+    #   - same sign: Keep only lepton pairs of the same sign
+    # Default value: neutral
+    charge check: neutral
+
+    # Flavor check mode
+    # Possible values:
+    #   - none: No check
+    #   - same: Two leptons of the same flavor
+    #   - ee: Two electrons
+    #   - mumu: Two muons
+    #   - emu: One electron and one muon
+    # Default value: same
+    flavor mode: same
+
+# Bad Z boson settings
+bad Z:
+    # Low mass bound [GeV]
+    # Default value: 0
+    low mass: 12
+
+    # High mass bound [GeV]
+    # Default value: infinity
+    high mass: 120
+
+    # Charge check mode
+    # Possible values:
+    #   - none: No check
+    #   - neutral: Keep only lepton pairs of opposite sign
+    #   - same sign: Keep only lepton pairs of the same sign
+    # Default value: neutral
+    charge check: neutral
+
+    # Flavor check mode
+    # Possible values:
+    #   - none: No check
+    #   - same: Two leptons of the same flavor
+    #   - ee: Two electrons
+    #   - mumu: Two muons
+    #   - emu: One electron and one muon
+    # Default value: same
+    flavor mode: same
+
+# How the measurement is binned in mass
+# Default value: empty
+mass bins: [ 0, 125, 135, 320 ]
+
+# Triggers
+#
+# The values below must be strings; use an empty string to disable triggers. See the documentation
+# of physics::trigger_mask for more details.
+triggers B-F: "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL, HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL"
+triggers G-H: "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ, HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ"
+
+# List of available data/MC samples
+samples:
+    - name: data
+      type: data
+      jobs: 6
+      bonzai dir: /store/group/phys_smp/AnalysisFramework/Bonzai/13TeV_2016/Data/v8.1/Catalogs/
+      catalog: Bonzais-DoubleMuon-all-VJetPruner-FourLep.txt
+    - name: ggH
+      type: MC
+      bonzai dir: /store/group/phys_smp/AnalysisFramework/Bonzai/13TeV_2016/MC/v8.1/Catalogs/
+      catalog: Bonzais-GluGluHToZZTo4L_M125_13TeV_powheg2_JHUgenV6_pythia8-all-VJetPruner-FourLepUnf.txt
+    - name: VBF
+      type: MC
+      bonzai dir: /store/group/phys_smp/AnalysisFramework/Bonzai/13TeV_2016/MC/v8.1/Catalogs/
+      catalog: Bonzais-VBF_HToZZTo4L_M125_13TeV_powheg2_JHUgenV6_pythia8-all-VJetPruner-FourLepUnf.txt
+    - name: DYJets
+      type: MC
+      jobs: 16
+      bonzai dir: /store/group/phys_smp/AnalysisFramework/Bonzai/13TeV_2016/MC/v8.1/Catalogs/
+      catalog: Bonzais-DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8-all-VJetPruner-FourLepUnf.txt
+    - name: DYJets-10to50
+      type: MC
+      jobs: 4
+      bonzai dir: /store/group/phys_smp/AnalysisFramework/Bonzai/13TeV_2016/MC/v8.1/Catalogs/
+      catalog: Bonzais-DYJetsToLL_M-10to50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8-all-VJetPruner-FourLepUnf.txt
+    - name: ZZ
+      type: MC
+      jobs: 5
+      bonzai dir: /store/group/phys_smp/AnalysisFramework/Bonzai/13TeV_2016/MC/v8.1/Catalogs/
+      catalog: Bonzais-ZZTo4L_13TeV_powheg_pythia8-all-VJetPruner-FourLepUnf.txt
+
+# Scale factors
+tables B-F:
+    electron id:    Electron_Id_Loose_SF_2016.txt
+    electron reco:  Electron_Reco_2016_SF_converted_new.txt
+    muon id:        Eff_SF_ID_BF_6_16_2017.txt
+    muon isolation: Eff_SF_ISO_BF_6_16_2017.txt
+    muon tracking:  Eff_SF_Tracking_BF_08_07_2017.txt
+    dimu trigger:   ScaleFactors_TriggerMu17Mu8_RunBF_Brussels.txt
+
+tables G-H:
+    electron id:    Electron_Id_Loose_SF_2016.txt
+    electron reco:  Electron_Reco_2016_SF_converted_new.txt
+    muon id:        Eff_SF_ID_GH_6_16_2017.txt
+    muon isolation: Eff_SF_ISO_GH_6_16_2017.txt
+    muon tracking:  Eff_SF_Tracking_GH_08_07_2017.txt
+    dimu trigger:   ScaleFactors_TriggerMu17Mu8DZ_RunGH_Brussels.txt
+
+# How to group MC samples when drawing Data/MC comparisons
+MC grouping:
+    - legend: "Higgs"
+      #required: yes
+      samples: [ ggH, VBF ]
+      color: 867 # kAzure + 8
+    - legend: "Z/#gamma^{*}"
+      #required: yes
+      samples: [ DYJets ]
+      color: 408 # kGreen - 8
+    - legend: "ZZ"
+      #required: yes
+      samples: [ ZZ ]
+      color: 633 # kRed + 1
+
+# The file below defines the binnings for histograms relevant to the analysis.
+# Default value: higgs-binnings.yml
+binning file: higgs-binnings.yml
+
+# Plot properties
+#
+# The sole mandatory field is the "selector", containing a regex that is matched
+# against plot names. When a plot name matches the regex, properties listed in
+# other fields are assigned to it. Rules lower in the list take precedence over
+# the ones above them.
+#
+# Supported properties:
+#   - produce (yes): Whether to make the plot
+#   - log x (no): Whether to x axis should use a log scale
+#   - ratio min (0.601): The minimum value shown on data/mc ratio plots
+#   - ratio max (1.399): The maximum value shown on data/mc ratio plots
+plots:
+    # Excluded plots
+    - selector: '^_.*'
+      produce: no
+    - selector: '.*[12]jet.*'
+      produce: no
+    - selector: 'el.*'
+      produce: no
+    - selector: 'mu.*'
+      produce: no
+    - selector: 'jet.*leading.*'
+      produce: no
+    - selector: 'jet.*subleading.*'
+      produce: no
+    - selector: 'jet.*third.*'
+      produce: no
+    - selector: 'jet.*fourth.*'
+      produce: no
+    - selector: '.*Zexc.*'
+      produce: no
+    - selector: 'mass.*mass.*'
+      produce: no
+    - selector: 'nJets.*_Zinc.*'
+      produce: no
+    - selector: 'nJets.*_Zinc0jet.*'
+      produce: yes
+    # Style changes
+    - selector: '.*'
+      ratio min: 0.501
+      ratio max: 1.499
+    - selector: '^phistar.*'
+      log x: yes
+    - selector: '^pt.*'
+      log x: yes
+    - selector: 'mass_Zinc0jet'

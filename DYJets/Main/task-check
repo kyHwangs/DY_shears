@@ -1,0 +1,418 @@
+#! /usr/bin/env python
+
+import argparse
+import curses
+import os
+import subprocess
+import sys
+import time
+
+class status(object):
+    def __init__(self, name, shortname, goodness):
+        self.name = name
+        self.shortname = shortname
+        self.goodness = goodness
+
+    def __eq__(self, other):
+        return (self.name == other.name
+                and self.shortname == other.shortname
+                and self.goodness == other.goodness)
+
+    @staticmethod
+    def error():
+        return status('Error', 'ERR', -4)
+
+    @staticmethod
+    def finished():
+        return status('Finished', 'OK', 5)
+
+    @staticmethod
+    def killed():
+        return status('Killed', 'KILL', -5)
+
+    @staticmethod
+    def pending():
+        return status('Pending', 'PEND', 0)
+
+    @staticmethod
+    def running():
+        return status('Running', 'RUN', 2)
+
+    @staticmethod
+    def unknown():
+        return status('Unknown', 'UNKN', -3)
+
+class job(object):
+    def __init__(self, directory, index):
+        self.directory = directory
+        self.index = index
+        self.status = status.unknown()
+
+    @staticmethod
+    def load_fast(directory, index):
+        job_file_path = '%s/jobs/job-%03d' % (directory, index)
+        if not os.path.isfile(job_file_path):
+            return None
+
+        j = job(directory, index)
+
+        with open(job_file_path, 'r') as job_file:
+            j.id = job_file.read().strip()
+
+        # Read the job command
+        job_command_file_path = '%s/jobs/job-%03d-command' % (directory, index)
+        if os.path.isfile(job_command_file_path):
+            with open(job_command_file_path, 'r') as job_command_file:
+                j.command = job_command_file.read().strip()
+        else:
+            j.command = '<unknown>'
+
+        return j
+
+    @staticmethod
+    def load(directory, index):
+        j = job.load_fast(directory, index)
+
+        job_exit_code_file_path = '%s/jobs/job-%03d-exit-code' % (directory, index)
+        if os.path.isfile(job_exit_code_file_path):
+            # We have the job exit code
+            with open(job_exit_code_file_path, 'r') as job_exit_code_file:
+                j.exit_code = int(job_exit_code_file.read().strip())
+                if j.exit_code == 0:
+                    j.status = status.finished()
+                else:
+                    j.status = status.error()
+        else:
+            # Is the job pending or running, or was it killed?
+            try:
+                FNULL = open(os.devnull, 'w')
+                lines = []
+                while len(lines) < 3:
+                    qstat_output = subprocess.check_output(['qstat', j.id], stderr = FNULL)
+                    lines = qstat_output.splitlines()
+                job_data = lines[2].split()
+                if job_data[4] == 'Q':
+                    j.status = status.pending()
+                elif job_data[4] == 'R':
+                    j.status = status.running()
+            except subprocess.CalledProcessError:
+                # We don't have an exit code file for the job, and the cluster
+                # doesn't know about it.
+                j.status = status.unknown()
+
+        return j
+
+    def log_file(self):
+        if (self.status == status.finished() or
+            self.status == status.error() or
+            self.status == status.killed()):
+            return self.directory + '/logs/submit-log-%03d.txt' % self.index
+        else:
+            return self.directory + '/logs/log-%03d.txt' % self.index
+
+def job_format_for_status(status):
+    colors = {
+        -5: 1,
+        -4: 2,
+        -3: 3,
+        0: 0,
+        2: 4,
+        5: 5,
+    }
+    if status.name == 'Unknown':
+        return curses.color_pair(colors[status.goodness]) | curses.A_BOLD
+    else:
+        return curses.color_pair(colors[status.goodness])
+
+class job_formatter(object):
+    def columns(self, jobs):
+        return [
+            ('ID', 3),
+            ('', 0),
+            #('QUEUE', 10),
+            ('ClustID', max([len(j.id) for j in jobs])),
+            ('STAT', 4),
+            ('COMMAND', max([len(j.command) for j in jobs]))
+        ]
+
+    def cell(self, col, job):
+        if col == 0:
+            return '%03d' % job.index
+        if col == 1:
+            return ''
+            #return job.queue or '<unknown>'
+        if col == 2:
+            return job.id
+        elif col == 3:
+            if job.status.name == 'Error':
+                return '%4d' % job.exit_code
+            else:
+                return '%4s' % job.status.shortname
+        elif col == 4:
+            return job.command
+
+    def format(self, col, job):
+        if col == 3:
+            return job_format_for_status(job.status)
+        return None
+
+def load_jobs(task):
+    jobs = []
+    index = 0
+    while True:
+        j = job.load_fast(task, index)
+        if j != None:
+            jobs.append(j)
+            index += 1
+        else:
+            break
+    return jobs
+
+def update_job(task, jobs, i):
+    j = job.load(task, i)
+    if j != None:
+        jobs[i] = j
+    return jobs
+
+def count_jobs_with_status(jobs, status):
+    count = 0
+    for j in jobs:
+        if j.status == status:
+            count += 1
+    return count
+
+def get_string(message, stdscr, color_pair=7):
+    height, width = stdscr.getmaxyx()
+
+    # Clear
+    stdscr.addstr(height - 1, 0, ' ' * (width - 1), curses.color_pair(0))
+
+    # Message
+    stdscr.addstr(height - 1, 0, message, curses.color_pair(color_pair))
+
+    curses.echo()
+    s = stdscr.getstr(height - 1, len(message) + 1).decode(encoding="utf-8")
+    curses.noecho()
+
+    return s
+
+def program(stdscr, task):
+    try:
+        curses.curs_set(0)
+        curses.init_pair(1, curses.COLOR_RED, curses.COLOR_BLACK)
+        curses.init_pair(2, curses.COLOR_RED, curses.COLOR_BLACK)
+        curses.init_pair(3, curses.COLOR_YELLOW, curses.COLOR_BLACK)
+        curses.init_pair(4, curses.COLOR_CYAN, curses.COLOR_BLACK)
+        curses.init_pair(5, curses.COLOR_GREEN, curses.COLOR_BLACK)
+        curses.init_pair(6, curses.COLOR_BLACK, curses.COLOR_GREEN)
+        curses.init_pair(7, curses.COLOR_BLACK, curses.COLOR_CYAN)
+
+        jf = job_formatter()
+
+        x = 0
+        y = 0
+        update = -1
+        jobs = None
+        sleep_start = time.time()
+
+        while True:
+            stdscr.erase()
+
+            height, width = stdscr.getmaxyx()
+
+            if update == -1: # Initial
+                jobs = load_jobs(task)
+            elif update == -2 and time.time() - sleep_start > 5: # Restart updating
+                update = 0
+                jobs = update_job(task, jobs, 0)
+            elif update >= 0: # Refresh job
+                jobs = update_job(task, jobs, update)
+            if len(jobs) == 0:
+                return
+
+            # Header
+            pos = 0
+            stdscr.addstr(0, pos, 'Task:', curses.color_pair(4))
+            pos += len('Task:') + 1
+
+            tasklabel = task
+            while tasklabel[-1] == '/':
+                tasklabel = tasklabel[:-1]
+            if len(tasklabel) > 25:
+                tasklabel = tasklabel[:25]
+            stdscr.addstr(0, pos, tasklabel, curses.color_pair(4) | curses.A_BOLD)
+            pos += len(tasklabel) + 2
+
+            for s in [status.killed(),
+                      status.error(),
+                      status.finished(),
+                      status.pending(),
+                      status.running(),
+                      status.unknown()]:
+                count = count_jobs_with_status(jobs, s)
+                if count > 0:
+                    label = s.name + ':'
+                    stdscr.addstr(0, pos, label, curses.color_pair(4))
+                    pos += len(label) + 1
+
+                    fmt = job_format_for_status(s)
+                    label = str(count)
+                    stdscr.addstr(0, pos, label, fmt | curses.A_BOLD)
+                    pos += len(label) + 2
+
+            # Columns
+            columns = jf.columns(jobs)
+            padwidth = 0
+            col_pos = []
+            for i in range(len(columns)):
+                col_pos.append(padwidth)
+                padwidth += max(len(columns[i][0]), columns[i][1]) + 1
+            padwidth -= 1
+
+            padwidth = max(padwidth, width)
+
+            # Header line
+            header_pad = curses.newpad(1, padwidth)
+            line = ' ' * padwidth
+            header_pad.insstr(0, 0, line, curses.color_pair(6))
+            for c in range(len(columns)):
+                header_pad.insstr(0, col_pos[c], columns[c][0], curses.color_pair(6))
+
+            # Jobs
+            pad = curses.newpad(len(jobs), padwidth)
+            for i in range(len(jobs)):
+                for c in range(len(columns)):
+                    fmt = jf.format(c, jobs[i])
+                    contents = jf.cell(c, jobs[i])
+                    if type(contents) != str:
+                        continue
+                    if len(contents) > columns[c][1]:
+                        contents = contents[:columns[c][1]]
+                    if fmt:
+                        pad.insstr(i, col_pos[c], contents, fmt)
+                    elif c != 3 and i == update:
+                        pad.insstr(i, col_pos[c], contents, curses.A_BOLD)
+                    else:
+                        pad.insstr(i, col_pos[c], contents)
+
+            # Footer
+            pos = 0
+            stdscr.addstr(height - 1, pos, ' Q ', curses.color_pair(0))
+            pos += len(' Q ')
+            stdscr.addstr(height - 1, pos, 'Quit     ', curses.color_pair(7))
+            pos += len('Quit     ')
+            stdscr.addstr(height - 1, pos, ' L ', curses.color_pair(0))
+            pos += len(' L ')
+            stdscr.addstr(height - 1, pos, 'Show log ', curses.color_pair(7))
+            pos += len('Show log ')
+            stdscr.addstr(height - 1, pos, ' K ', curses.color_pair(0))
+            pos += len(' K ')
+            stdscr.addstr(height - 1, pos, 'Kill     ', curses.color_pair(7))
+            pos += len('Kill     ')
+
+            try:
+                stdscr.nooutrefresh()
+                header_pad.noutrefresh(0, x,
+                                       1, 0,
+                                       1, width - 1)
+                pad.noutrefresh(y, x,
+                                2, 0,
+                                height - 2, width - 1)
+                curses.doupdate()
+            except curses.error:
+                continue
+
+            if update >= -1:
+                update = update + 1 # Update next job...
+                while (update < len(jobs) and
+                        (jobs[update].status == status.finished() or
+                         jobs[update].status == status.error())):
+                    update = update + 1 # ...but don't update jobs whose status won't change
+                if update >= len(jobs):
+                    update = -2 # Stop updating
+                    sleep_start = time.time()
+
+            curses.halfdelay(1)
+            c = stdscr.getch()
+            if c == ord('q') or c == ord('Q'):
+                break
+            if c == ord('l') or c == ord('L'):
+                index = get_string('Job ID?', stdscr)
+                try:
+                    j = jobs[int(index)]
+                    curses.endwin()
+                    import subprocess
+                    if subprocess.call(['less', j.log_file()]) != 0:
+                        curses.flash()
+                except:
+                    curses.flash()
+            if c == ord('k') or c == ord('K'):
+                index = get_string('Job ID to kill? (-1 for all)', stdscr, 1)
+                try:
+                    curses.endwin()
+                    index = int(index)
+
+                    jobs_to_kill = []
+                    if index < 0:
+                        # Kill all jobs
+                        jobs_to_kill = filter(
+                            lambda j: (j.status == status.running() or
+                                       j.status == status.pending()),
+                            jobs)
+                    else:
+                        jobs_to_kill = [ jobs[index] ]
+
+                    ok = True
+                    import subprocess
+                    for j in jobs_to_kill:
+                        if subprocess.call(['qdel', '-a', j.id]) != 0:
+                            ok = False
+                    if not ok:
+                        curses.flash()
+                except:
+                    curses.flash()
+            elif c == curses.KEY_UP:
+                y = max(y - 1, 0)
+            elif c == curses.KEY_RIGHT:
+                x = min(x + 5, padwidth - width)
+                if x < 0:
+                    x = 0
+            elif c == curses.KEY_DOWN:
+                y = min(y + 1, len(jobs) - height + 3)
+                if y < 0:
+                    y = 0
+            elif c == curses.KEY_LEFT:
+                x = max(x - 5, 0)
+            elif c == curses.KEY_PPAGE:
+                y = max(y - height + 3, 0)
+            elif c == curses.KEY_NPAGE:
+                y = min(y + height - 2, len(jobs) - height + 3)
+                if y < 0:
+                    y = 0
+            elif c == curses.KEY_HOME:
+                y = 0
+            elif c == curses.KEY_END:
+                y = len(jobs) - height + 3
+
+    except KeyboardInterrupt:
+        return
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='Checks jobs status on the cluster.')
+    parser.add_argument('task',
+                        help = 'Task directory')
+    parser.add_argument('--print-failed',
+                        action = 'store_true',
+                        required = False,
+                        dest = 'printFailed',
+                        help = 'Prints commands of failed jobs to stdout')
+    args = parser.parse_args()
+
+    if args.printFailed:
+        jobs = load_jobs(args.task)
+        for j in jobs:
+            if j.status == status.error() or j.status == status.killed():
+                print(j.command)
+    else:
+        curses.wrapper(program, args.task)
+

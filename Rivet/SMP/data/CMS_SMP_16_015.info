@@ -1,0 +1,37 @@
+Name: CMS_SMP_16_015
+Year: 2016
+Summary: Differential cross section of Z boson production in association with jets in proton-proton collisions at $\sqrt{s} = 13\,TeV$
+Experiment: CMS
+Collider: LHC
+InspireID: 
+Status: CMS INTERNAL
+Authors:
+  - Philippe Gras (philippe.gras@cern.ch)
+References:
+  - https://inspirehep.net/record/1667854
+RunInfo:
+  'Run MC generators with Z decaying leptonically into both electrons and muons at 13 TeV CoM energy. Although The tau channel is not used it is safe to run on a sample that includes it. The cross section should be provided for a single leptonic decay channel. If only one (mumu or ee) channel is included in the MC, please apply a factor 2 in the provided cross section to compensate for the missing channel.'
+NeedCrossSection: yes
+Beams: [p+, p+]
+Energies: [13000]
+Description:
+'Differential cross section measurements of the Z($\rightarrow$ll) boson production in association with jets are presented, using 13 TeV proton-proton collisions data recorded by the CMS detector at the LHC, corresponding to an integrated luminosity of 2.5 fb$^{-1}$. The cross sections are presented as a function of jet multiplicity, the jet transverse momenta, and the jet rapidity for different jet multiplicities. The cross section measurements are then compared with the predictions from a multileg next-to-leading-order Monte Carlo generator.'
+Cuts: 'First two leading electrons or muons with $p_T > 20$ GeV and $|\eta| < 2.4$
+     Dilepton invariant mass in the [71,111] GeV range
+     Jets $p_T > 30$ GeV and $|y| < 2.4$
+     $R($lepton,jet$) > 0.4$'
+BibKey: Sirunyan:2018cpw
+BibTeX: @article{Sirunyan:2018cpw,
+      author         = "Sirunyan, Albert M and others",
+      title          = "{Measurement of differential cross sections for Z boson
+                        production in association with jets in proton-proton
+                        collisions at $\sqrt{s} =$ 13 TeV}",
+      collaboration  = "CMS",
+      year           = "2018",
+      eprint         = "1804.05252",
+      archivePrefix  = "arXiv",
+      primaryClass   = "hep-ex",
+      reportNumber   = "CMS-SMP-16-015, CERN-EP-2018-071, CMS-SMP-16-015,
+                        CERN-EP-2018-071",
+      SLACcitation   = "%%CITATION = ARXIV:1804.05252;%%"
+}

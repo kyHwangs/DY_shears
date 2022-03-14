@@ -1,0 +1,23 @@
+#primary dataset: /ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5CR1_13TeV-powheg-madspin-pythia8/RunIISummer20UL18NanoAODv9-106X_upgrade2018_realistic_v16_L1v1-v1/NANOAODSIM 
+* datatype: background
+* primary events: 37106000
+* primary files: 1
+* lumi: -1
+* sample xsec: 216.99
+
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2018/background/NanoBonzai13dec_bg_ST_t-channel_2018UL/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5CR1_13TeV-powheg-madspin-pythia8/NanoTestPost/211213_084523/0000/tree_1.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2018/background/NanoBonzai13dec_bg_ST_t-channel_2018UL/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5CR1_13TeV-powheg-madspin-pythia8/NanoTestPost/211213_084523/0000/tree_2.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2018/background/NanoBonzai13dec_bg_ST_t-channel_2018UL/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5CR1_13TeV-powheg-madspin-pythia8/NanoTestPost/211213_084523/0000/tree_3.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2018/background/NanoBonzai13dec_bg_ST_t-channel_2018UL/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5CR1_13TeV-powheg-madspin-pythia8/NanoTestPost/211213_084523/0000/tree_4.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2018/background/NanoBonzai13dec_bg_ST_t-channel_2018UL/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5CR1_13TeV-powheg-madspin-pythia8/NanoTestPost/211213_084523/0000/tree_5.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2018/background/NanoBonzai13dec_bg_ST_t-channel_2018UL/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5CR1_13TeV-powheg-madspin-pythia8/NanoTestPost/211213_084523/0000/tree_6.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2018/background/NanoBonzai13dec_bg_ST_t-channel_2018UL/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5CR1_13TeV-powheg-madspin-pythia8/NanoTestPost/211213_084523/0000/tree_7.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2018/background/NanoBonzai13dec_bg_ST_t-channel_2018UL/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5CR1_13TeV-powheg-madspin-pythia8/NanoTestPost/211213_084523/0000/tree_8.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2018/background/NanoBonzai13dec_bg_ST_t-channel_2018UL/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5CR1_13TeV-powheg-madspin-pythia8/NanoTestPost/211213_084523/0000/tree_9.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2018/background/NanoBonzai13dec_bg_ST_t-channel_2018UL/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5CR1_13TeV-powheg-madspin-pythia8/NanoTestPost/211213_084523/0000/tree_10.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2018/background/NanoBonzai13dec_bg_ST_t-channel_2018UL/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5CR1_13TeV-powheg-madspin-pythia8/NanoTestPost/211213_084523/0000/tree_11.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2018/background/NanoBonzai13dec_bg_ST_t-channel_2018UL/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5CR1_13TeV-powheg-madspin-pythia8/NanoTestPost/211213_084523/0000/tree_12.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2018/background/NanoBonzai13dec_bg_ST_t-channel_2018UL/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5CR1_13TeV-powheg-madspin-pythia8/NanoTestPost/211213_084523/0000/tree_13.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2018/background/NanoBonzai13dec_bg_ST_t-channel_2018UL/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5CR1_13TeV-powheg-madspin-pythia8/NanoTestPost/211213_084523/0000/tree_14.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2018/background/NanoBonzai13dec_bg_ST_t-channel_2018UL/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5CR1_13TeV-powheg-madspin-pythia8/NanoTestPost/211213_084523/0000/tree_15.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2018/background/NanoBonzai13dec_bg_ST_t-channel_2018UL/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5CR1_13TeV-powheg-madspin-pythia8/NanoTestPost/211213_084523/0000/tree_16.root

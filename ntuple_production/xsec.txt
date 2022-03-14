@@ -1,0 +1,21 @@
+# Sample                                                              xsec (pb) 
+DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8                  6104
+DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8                   6025.2
+WJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8                      60290
+WJetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8                       61526.7
+ST_s-channel_4f_leptonDecays_13TeV-amcatnlo-pythia8_TuneCUETP8M1           10.32
+#ST_t-channel_5f_leptonDecays_13TeV-amcatnlo-pythia8_TuneCUETP8M1
+ST_tW_antitop_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1         35.6
+ST_tW_top_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1             35.6
+TT_TuneCUETP8M1_13TeV-powheg-pythia8                                      831.7
+WWTo2L2Nu_13TeV-powheg                                                     12.21
+WZJets_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8                              4.4
+WZ_TuneCUETP8M1_13TeV-pythia8                                              23.5
+ZZ_TuneCUETP8M1_13TeV-pythia8                                              15.4
+#WZJToLLLNu_TuneCUETP8M1_13TeV-amcnlo-pythia8 xsec taken from McM.
+WZJToLLLNu_TuneCUETP8M1_13TeV-amcnlo-pythia8                                7.0
+DYJetsToLL_Pt-50To100_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8               358.9
+DYJetsToLL_Pt-100To250_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8              83.11
+DYJetsToLL_Pt-250To400_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8              2.990
+DYJetsToLL_Pt-400To650_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8              0.3882
+DYJetsToLL_Pt-650ToInf_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8              0.03737   

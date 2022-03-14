@@ -1,0 +1,29 @@
+#!/bin/bash
+
+[ $# != 2] && { echo "Usage: postProcessing inputDir outputDir." 1>&2; exit 1; }
+
+inputDir="$1"
+outputDir="$2"
+
+mkdir -p "$outputDir"
+
+[ -e $outputDir/HistoFilesCrab ] && { echo "Directory $outputDir/HistoFilesCrab  is in the way!" 1>&2; exit 1; }
+
+cd "$outputDir" || { echo "Failed to enter directory $outputDir." 1>&2; exit 1; }
+
+for f in $inputDir/Histo*.tgz; do
+    echo "Untaring $f..." 1>&2
+    tar xzf "$f"
+done
+
+cd HistoFilesCrab || { echo "Failed to enter HistoFilesCrab directory." 1>&2; exit 1; }
+
+mv *_JetEtaMax_24.root ..
+
+for f in *24_1.root; do
+    echo $f  | grep '\*' -q && continue
+    base=${f%_1.root}
+    hadd ../$base.root ${base}_*.root
+done
+
+echo "You can delete HistoFilesCrab directory"

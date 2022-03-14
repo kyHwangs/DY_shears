@@ -1,0 +1,472 @@
+# This is the configuration file for the Higgs analysis, year 2016.
+# Please keep it organized, and don't delete comments.
+
+# Options related to output and logs
+log:
+    # Whether to use colors in the terminal.
+    #Possible values: yes|no|auto (default: auto)
+    color: auto
+
+    # Controls what's printed to the screen.
+    # Possible values: debug|info|warn|error|fatal (default: info)
+    log level: info
+
+    # Pipe logs to the given log file, comment out for no log.
+    log file: log16.txt
+
+    # Controls what's written in the log file.
+    # Possible values: debug|info|warn|error|fatal (default: debug)
+    log file level: debug
+
+    # Whether to override ROOT's default log handler.
+    # Default value: yes
+    #override root handler: yes
+
+# Whether to use pileup reweighing
+# Default value: true
+use pileup reweighing: true
+
+# Year (used for pileup)
+year: 2016
+
+# Whether results are preliminary (for plots)
+preliminary: yes
+
+# Options related to the selection of jets
+jets:
+    # Pt cut [GeV]
+    # Default value: 30
+    pt: 30
+
+    # Rapidity cut
+    # Default value: 2.4
+    rapidity: 2.4
+
+    # PU MVA cut
+    # Default value: -0.2
+    pu mva: -0.2
+
+    # deltaR(jet, lepton) cut
+    # Default value: 0.4
+    lepton delta r: 0.4
+
+    # Whether to apply jet energy smearing
+    # Default value: yes
+    JER smearing: yes
+
+prefiring weights:
+    # Whether to apply prefiring weights
+    use: yes
+
+# Options of the b jet veto
+b jet veto:
+    # Whether to cut events with b jets
+    # Default value: yes
+    use: no
+
+    # Working point; see the b tagging POG TWiki for recommended working points
+    # Allowed values: loose, medium, tight
+    # Default value: loose
+    working point: medium
+
+    # Location of the scale factors csv file. Interpreted relative to the
+    # EfficiencyTables/ directory.
+    # Default value: CSVv2_Moriond17_B_H.csv
+    scale factor path: CSVv2_Moriond17_B_H.csv
+
+# Options related to the selection of electrons
+electrons:
+    # Pt cut [GeV]
+    # Default value: 20
+    pt: 20
+
+    # Eta cut
+    # Default value: 2.4
+    eta: 2.4
+
+    # Relative isolation cut
+    # Default value: 0.25
+    isolation: 999999999.
+
+    # Id
+    # Possible values: loose, medium, tight
+    # Default value: tight
+    id: medium
+
+    # Whether to use the identification scale factors
+    # Default value: yes
+    use id scale factors: yes
+
+    # Whether to use the reconstruction scale factors
+    # Default value: yes
+    use reconstruction scale factors: no
+
+# Options related to the selection of muons
+muons:
+    # Pt cut [GeV]
+    # Default value: 20
+    pt: 20
+
+    # Eta cut
+    # Default value: 2.4
+    eta: 2.4
+
+    # Relative isolation cut
+    # Default value: 0.25
+    #isolation: 0.15
+
+    #Iso
+    # Possible values: veryloose, loose, medium, tight
+    iso: tight
+
+    # Id
+    # Possible values: loose, medium, tight
+    # Default value: tight
+    id: tight
+
+    # Whether to use the identification scale factors
+    # Default value: yes
+    use id scale factors: yes
+
+    # Whether to use the isolation scale factors
+    # Default value: yes
+    use isolation scale factors: yes
+
+    # Whether to use the tracking scale factors
+    # Default value: yes
+    use tracking scale factors: no
+
+    # Whether to use Rochester correction
+    # Default value: yes
+    use rochester correction: yes
+
+    # Path to the directory containing tables for Rochester corrections. Interpreted relative to
+    # the EfficiencyTables/ directory.
+    # Default value: rcdata.2016.v3
+    rochester correction path: RoccoR2016bUL.txt
+     #rochester correction path: rcdata.2016.v3
+     #rochester correction path: RoccoR2017.txt.
+     #rochester correction path: rcdata.2016.v3
+
+# Good Z boson settings
+Z:
+    # Low mass bound [GeV]
+    # Default value: 0
+    low mass: 10
+
+    # High mass bound [GeV]
+    # Default value: infinity
+    high mass: 1000
+
+    # Charge check mode
+    # Possible values:
+    #   - none: No check
+    #   - neutral: Keep only lepton pairs of opposite sign
+    #   - same sign: Keep only lepton pairs of the same sign
+    # Default value: neutral
+    charge mode: neutral
+
+    # Flavor check mode
+    # Possible values:
+    #   - none: No check
+    #   - same: Two leptons of the same flavor
+    #   - ee: Two electrons
+    #   - mumu: Two muons
+    #   - emu: One electron and one muon
+    # Default value: same
+    flavor mode: mumu
+
+# How the measurement is binned in mass
+# Default value: empty
+mass bins: [ 10, 50, 76, 106, 170, 350, 1000 ]
+
+# Triggers
+#
+# The values below must be strings; use an empty string to disable triggers. See the documentation
+# of physics::trigger_mask for more details.
+# ["IsoMu24_or_IsoTkMu24", "CutBasedIdTight_and_PFIsoTight"]
+triggers B-F: |
+    IsoMu24_or_IsoTkMu24
+
+triggers G-H: |
+    IsoMu24_or_IsoTkMu24
+
+# List of available data/MC samples
+samples:
+    - name: data
+      type: data
+      jobs: 32
+      nano dir: Catalogs/2016preAPV 
+      catalog: Catalog19UL16_preAPV_DYJetsToLL.txt
+
+    - name: DYJets
+      type: MC
+      jobs: 20
+      nano dir: Catalogs/2016preAPV
+      catalog: Catalog19UL16_postAPV_DYJetsToLL.txt
+
+    - name: ST-s-channel
+      type: background
+      nano dir: Catalogs/2016preAPV/
+      catalog: Catalog2016_bonzai_ST-s-channel.txt
+    - name: ST-t-channel
+      type: background
+      nano dir: Catalogs/2016preAPV/
+      catalog: Catalog2016_bonzai_ST-t-channel.txt
+    - name: STbar-tW
+      type: background
+      nano dir: Catalogs/2016preAPV/
+      catalog: Catalog2016_bonzai_STbar-tW.txt
+    - name: ST-tW
+      type: background
+      nano dir: Catalogs/2016preAPV/
+      catalog: Catalog2016_bonzai_ST-tW.txt
+    - name: WToLNu
+      type: background
+      jobs: 8
+      nano dir: Catalogs/2016preAPV/
+      catalog: Catalog2016_bonzai_WToLNu.txt
+    - name: WWTo2L2Nu
+      type: background
+      nano dir: Catalogs/2016preAPV
+      catalog: Catalog2016_bonzai_WWTo2L2Nu.txt
+    - name: WZ
+      type: background
+      nano dir: Catalogs/2016preAPV
+      catalog: Catalog2016_bonzai_WZ.txt
+    - name: ZZ
+      type: background
+      nano dir: Catalogs/2016preAPV
+      catalog: Catalog2016_bonzai_ZZ.txt
+    - name: TT
+      type: background
+      jobs: 10
+      nano dir: Catalogs/2016preAPV
+      catalog: Catalog2016_bonzai_ttbar.txt
+    - name: TauTau
+      type: background
+      jobs: 10
+      nano dir: Catalogs/2016preAPV
+      catalog: Catalog2016_bonzai_DY_TauTau.txt
+
+# Scale factors
+tables B-F:
+    electron id:    scalefactors_Medium_Electron_period1.txt
+    electron reco:  SMP_17_010_BCDEF_MediumID_electrons.txt
+    #muon id:        scalefactors_Medium_Muon_period1_July.txt
+    #muon isolation: Eff_SF_ISO_BF_6_16_2017.txt
+    # muon id:        Efficiencies_muon_generalTracks_Z_Run2016_UL_HIPM_ID_MediumID.txt
+    # muon isolation: Efficiencies_muon_generalTracks_Z_Run2016_UL_HIPM_ISO_TightRelIso_DEN_MediumID.txt
+
+
+    # ! : new SFs for coarse vs fine
+    muon id:        coarse_tri.txt
+    muon isolation: coarse_tri.txt
+
+    # muon id:        coarse_up.txt
+    # muon isolation: coarse_up.txt
+
+    # muon id:        coarse_down.txt
+    # muon isolation: coarse_down.txt
+
+    # muon id:        fine_tri.txt
+    # muon isolation: fine_tri.txt
+
+    # muon id:        fine_up.txt
+    # muon isolation: fine_up.txt
+
+    # muon id:        fine_down.txt
+    # muon isolation: fine_down.txt
+
+
+    #muon tracking:  scalefactors_Tracking_Muon_SMP_17_010_period1.txt
+    emu trigger:    Eff_SF_SingleMuTrigger_BF_6_16_2017.txt
+    dimu trigger:   ScaleFactors_TriggerMu17Mu8Mu24_MediumID_RunBF.txt
+    diel trigger leg1: Electron_trigger_seoul_leg1.txt
+    diel trigger leg2: Electron_trigger_seoul_leg2.txt
+    bjet loose eff:       btag-loose-b.txt
+    cjet loose eff:       btag-loose-c.txt
+    udsgjet loose eff:    btag-loose-udsg.txt
+    bjet medium eff:       btag-medium-b.txt
+    cjet medium eff:       btag-medium-c.txt
+    udsgjet medium eff:    btag-medium-udsg.txt
+    bjet tight eff:       btag-tight-b.txt
+    cjet tight eff:       btag-tight-c.txt
+    udsgjet tight eff:    btag-tight-udsg.txt
+
+tables G-H:
+    electron id:    scalefactors_Medium_Electron_period2.txt
+    electron reco:  SMP_17_010_GH_MediumID_electrons.txt
+    #muon id:        scalefactors_Medium_Muon_period2_July.txt
+    # muon id:        Efficiencies_muon_generalTracks_Z_Run2016_UL_HIPM_ID_MediumID.txt
+    # muon isolation: Efficiencies_muon_generalTracks_Z_Run2016_UL_HIPM_ISO_TightRelIso_DEN_MediumID.txt
+
+    # ! : new SFs for coarse vs fine
+    muon id:        coarse_tri.txt
+    muon isolation: coarse_tri.txt
+
+    # muon id:        coarse_up.txt
+    # muon isolation: coarse_up.txt
+
+    # muon id:        coarse_down.txt
+    # muon isolation: coarse_down.txt
+
+    # muon id:        fine_tri.txt
+    # muon isolation: fine_tri.txt
+
+    # muon id:        fine_up.txt
+    # muon isolation: fine_up.txt
+
+    # muon id:        fine_down.txt
+    # muon isolation: fine_down.txt
+
+    muon tracking:  scalefactors_Tracking_Muon_SMP_17_010_period2.txt
+    emu trigger:    Eff_SF_SingleMuTrigger_GH_6_16_2017.txt
+    dimu trigger:   ScaleFactors_TriggerMu17Mu8DZMu24_MediumID_RunGH.txt
+    diel trigger leg1: Electron_trigger_seoul_leg1.txt
+    diel trigger leg2: Electron_trigger_seoul_leg2.txt
+    bjet loose eff:       btag-loose-b.txt
+    cjet loose eff:       btag-loose-c.txt
+    udsgjet loose eff:    btag-loose-udsg.txt
+    bjet medium eff:       btag-medium-b.txt
+    cjet medium eff:       btag-medium-c.txt
+    udsgjet medium eff:    btag-medium-udsg.txt
+    bjet tight eff:       btag-tight-b.txt
+    cjet tight eff:       btag-tight-c.txt
+    udsgjet tight eff:    btag-tight-udsg.txt
+
+# Reweighing (eg for merged samples)
+#
+# For each possible reweighing, the syntax is:
+#
+#   sample name: table.txt
+#
+# The table should contain the numbers needed for reweighing. In order to be
+# useful, several samples will often share the same table.
+#
+# The tables can be derived by tweaking Main/dyjets-sample-weights.cc.
+#reweighing:
+#    # Based on the number of partons npNLO
+#    npNLO:
+#        DYJets:     merging-DYJets-npNLO.txt
+#        DYJets-0J:  merging-DYJets-npNLO.txt
+#        DYJets-1J:  merging-DYJets-npNLO.txt
+#        DYJets-2J:  merging-DYJets-npNLO.txt
+
+# How to group MC samples when drawing Data/MC comparisons
+MC grouping:
+    - legend: "Z/#gamma* #rightarrow #mu#mu"
+      required: yes
+    #  #samples: [ DYJets-pt0-50, DYJets-pt50-100, DYJets-pt100-250, DYJets-pt250-400, DYJets-pt400-650 ,DYJets-pt650-inf ]
+    #  #samples: [ DYJets-pt0-50, DYJets-pt50-100, DYJets-pt100-250, DYJets-pt250-400, DYJets-pt400-650]
+      samples: [ DYJets ]
+      color: 408 # kGreen - 8
+      scale factor: 1.0
+      is signal: yes
+    - legend: "t#bar{t}"
+      samples: [ TT ]
+      color: 600 # kBlue
+    - legend: VV
+      samples: [ ZZ, WWTo2L2Nu, WZ ]
+      color: 633 # kRed + 1
+    - legend: Single top
+      samples: [ ST-s-channel, ST-t-channel, STbar-tW, ST-tW ]
+      color: 616 # kMagenta
+    - legend: W
+      samples: [ WToLNu ]
+      color: 800 # kOrange
+    - legend: DY TauTau
+      samples: [ TauTau ]
+      color: 900 # kPink
+
+
+# The file below defines the binnings for histograms relevant to the analysis.
+# Default value: dyjets-binnings.yml
+binning file: dyjets-binnings.yml
+
+# Plot properties
+#
+# The sole mandatory field is the "selector", containing a regex that is matched
+# against plot names. When a plot name matches the regex, properties listed in
+# other fields are assigned to it. In general, rules lower in the list take
+# precedence over the ones above them, but for some properties they add up.
+#
+# Supported properties:
+#   - produce (yes): Whether to make the plot
+#   - log x (no): Whether to x axis should use a log scale
+#   - ratio min (0.601): The minimum value shown on data/mc ratio plots
+#   - ratio max (1.399): The maximum value shown on data/mc ratio plots
+#   - x axis label: The label of the x axis. Captures from the selector can be
+#                   used to provide dynamic labels.
+#   - x axis detail: Text that will appear in parenthesis after the axis label.
+#                    Several labels can be added this way. Captures from the
+#                    selector can be used to provide dynamic labels.
+#   - x axis unit: The unit of the x axis. Appears between square brackets after
+#                  the main label. Captures from the selector can be used to
+#                  provide dynamic labels.
+plots:
+    # Excluded plots
+    - selector: '^_.*'
+      produce: no
+    - selector: '.*-gen$'
+      produce: no
+    - selector: '.*-matrix$'
+      produce: no
+    - selector: '.*[12]jet.*'
+      produce: no
+    - selector: 'el.*'
+      produce: no
+    - selector: 'mu.*'
+      produce: no
+    - selector: 'genLep.*'
+      produce: no
+    - selector: 'bjet.*'
+      produce: no
+    - selector: 'jet.*leading.*'
+      produce: no
+    - selector: 'jet.*subleading.*'
+      produce: no
+    - selector: 'jet.*third.*'
+      produce: no
+    - selector: 'jet.*fourth.*'
+      produce: no
+    - selector: '.*exc.*'
+      produce: no
+    - selector: 'mass.*mass.*'
+      produce: no
+    - selector: 'nJets.*_inc.*'
+      produce: no
+    - selector: 'nJets.*_inc0jet.*'
+      produce: yes
+    # Style changes
+    - selector: '.*'
+      ratio min: 0.601
+      ratio max: 1.399
+    - selector: '^phistar.*'
+      log x: yes
+    - selector: '^pt.*'
+      log x: yes
+    - selector: '^mass_wide.*'
+      log x: yes
+    - selector: 'mass_inc0jet'
+      ratio min: 0.601
+      ratio max: 1.399
+    # Axis labels
+    - selector: '^mass.*'
+      x axis label: 'M_{ll}'
+      x axis unit: 'GeV'
+    - selector: '^nJets.*'
+      x axis label: 'Exclusive number of jets'
+    - selector: '^nJetsIncl.*'
+      x axis label: 'Inclusive number of jets'
+    - selector: '^phistar.*'
+      x axis label: '#phi*'
+    - selector: '^pt.*'
+      x axis label: 'p_{T}^{ll}'
+      x axis unit: 'GeV'
+    - selector: '.+mass(.*)_(.*).*'
+      x axis detail: '$1 #leq M_{ll} < $2 GeV'
+    - selector: '.*inc(1|2)jet.*'
+      x axis detail: 'N_{jets} #geq $1'
+    - selector: '.*exc(1|2)jet.*'
+      x axis detail: 'N_{jets} = $1'

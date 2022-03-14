@@ -1,0 +1,9 @@
+* base directory: /store/group/phys_smp/AnalysisFramework/Baobab/13TeV_25ns_silver/Data/v5/Catalogs/
+* output directory: /store/group/phys_smp/AnalysisFramework/Bonzai/13TeV_25ns_silver/Data/v5.TEST/Ntuples/ 
+
+# Catalog files                Selection  Subselection Number of files per job
+Baobabs-DoubleEG-all.txt       VJetPruner DE           35
+Baobabs-DoubleMuon-all.txt     VJetPruner DMu          35
+Baobabs-MuonEG-all.txt         VJetPruner EMu          35
+Baobabs-SingleElectron-all.txt VJetPruner SE           35
+Baobabs-SingleMuon-all.txt     VJetPruner SMu          35

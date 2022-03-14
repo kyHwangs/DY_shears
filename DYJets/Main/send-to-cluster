@@ -1,0 +1,265 @@
+#! /usr/bin/env python
+
+import datetime
+import os
+import stat
+import shutil
+import subprocess
+import sys
+import time
+
+class iihe_cluster(object):
+    def __init__(self, queue):
+        if queue in ['express', 'highbw', 'highmem', 'localgrid']:
+            self.queue = queue
+        else:
+            raise ValueError(queue)
+
+    def condor_template(self):
+        return '''
+executable            = {exe_script}
+output                = {job_log_file2}
+error                 = {job_log_file3}
+log                   = {job_log_file4} 
+requirements          = (OpSysAndVer =?= "CentOS7")
++JobFlavour            = "nextweek"
+queue 1
+
+'''
+    def script_template(self):
+        return '''#! /usr/bin/env bash
+
+set -e # Fail on errors during bootstrap
+
+cd {working_directory}
+
+# Setup CMS
+#source $VO_CMS_SW_DIR/cmsset_default.sh
+#export SCRAM_ARCH=slc6_amd64_gcc530
+
+set +e # Accept errors from now on
+
+# Setup CMS environment
+#eval `scramv1 runtime -sh` # cmsenv
+# Setup environment
+source lcg-env.sh #luienv
+
+# Setup proxy
+cp /user/vandenbe/x509up_u23118 /tmp || true
+chmod go-r $(voms-proxy-info -p) || true
+
+echo "Working directory:"
+pwd
+echo "Contents:"
+ls
+echo "Start time:"
+date
+
+set -o pipefail
+{command} 2>&1 | tee {job_log_file}
+
+EXIT_CODE=$?
+set +o pipefail
+
+echo $EXIT_CODE >{job_exit_code_file}
+
+echo "End time:"
+date
+echo "Exit code:"
+echo $EXIT_CODE
+
+exit $EXIT_CODE
+'''
+
+    def csubmit(self, script_path):
+        for i in range(3):
+            try:
+                print (['condor_submit',
+                                          script_path])
+                code = subprocess.check_output(['condor_submit',
+                      script_path])
+                time.sleep(0.4)
+                return code
+            except subprocess.CalledProcessError:
+                time.sleep(10)
+        sys.stderr.write('ERROR: sub to condor failed.\n')
+
+    def submit(self, name, script_path, submit_log_file):
+        # Try a few times before giving up
+        for i in range(3):
+            try:
+                code = subprocess.check_output(['qsub',
+                                                '-N', name,
+                                                '-q', self.queue,
+                                                '-j', 'oe',
+                                                '-o', submit_log_file,
+                                                '-l', 'walltime=01:00:00',
+                                                script_path])
+                print (['qsub',
+                                                '-N', name,
+                                                '-q', self.queue,
+                                                '-j', 'oe',
+                                                '-o', submit_log_file,
+                                                '-l', 'walltime=01:00:00',
+                                                script_path])
+                time.sleep(0.4)
+                return code
+            except subprocess.CalledProcessError:
+                time.sleep(10)
+        sys.stderr.write('ERROR: qsub failed.\n')
+
+class submission(object):
+    def __init__(self, name, cluster, commands):
+        self.name = name
+        self.cluster = cluster
+        self.commands = commands
+        self.scripts = [] # Filled by prepare()
+        self.cscripts = []
+    def copy_proxy(self, directory):
+        try:
+            proxy_path = subprocess.check_output(['voms-proxy-info', '-p']).strip()
+            copied_path = os.path.join(str(directory), str(os.path.basename(proxy_path)))
+            shutil.copyfile(proxy_path, copied_path)
+            shutil.copymode(proxy_path, copied_path)
+            return copied_path
+        except subprocess.CalledProcessError:
+            sys.stderr.write(
+                'Warning: Did not find a valid proxy. You can safely ignore this warning if\n'
+                + '         your code doesn\'t need one.\n')
+
+    def make_info_files(self, directory):
+        with open(directory + '/commands.txt', 'w') as cmd_file:
+            for cmd in self.commands:
+                cmd_file.write(cmd)
+                cmd_file.write('\n')
+        with open(directory + '/git-show.txt', 'w') as show_file:
+            proc = subprocess.Popen(['git', 'show', '-s'], stdout = show_file)
+            proc.wait()
+        with open(directory + '/git-status.txt', 'w') as status_file:
+            proc = subprocess.Popen(['git', 'status'], stdout = status_file)
+            proc.wait()
+        with open(directory + '/git-diff.txt', 'w') as diff_file:
+            proc = subprocess.Popen(['git', 'diff'], stdout = diff_file)
+            proc.wait()
+
+    def format_command(self, command, results_directory):
+        args = {
+            'results': results_directory,
+        }
+        return command.format(**args)
+
+    def prepare(self):
+        pwd = os.getcwd()
+
+        time = datetime.datetime.today().strftime('%Y-%m-%d_%Hh%M')
+        if os.path.isdir(self.name):
+            directory = '%s/%s/%s' % (pwd, self.name, time)
+        else:
+            directory = '%s/%s-%s' % (pwd, self.name, time)
+        if os.path.isdir(directory):
+            raise Exception('Directory %s already exists' % directory)
+        os.mkdir(directory)
+        sys.stderr.write('%s/%s\n' % (self.name, time))
+
+        info_directory = directory + '/info'
+        os.mkdir(info_directory)
+
+        jobs_directory = directory + '/jobs'
+        os.mkdir(jobs_directory)
+
+        logs_directory = directory + '/logs'
+        os.mkdir(logs_directory)
+
+        results_directory = directory + '/results'
+        os.mkdir(results_directory)
+
+        scripts_directory = directory + '/scripts'
+        os.mkdir(scripts_directory)
+
+        self.make_info_files(info_directory)
+        proxy_path = self.copy_proxy(jobs_directory)
+
+        template = self.cluster.script_template()
+        ctemplate = self.cluster.condor_template()
+        for index in range(len(self.commands)):
+            script_path = '%s/%03d.sh' % (scripts_directory, index)
+            submit_log_path = '%s/submit-log-%03d.txt' % (logs_directory, index)
+            job_file_path = '%s/job-%03d' % (jobs_directory, index)
+            job_command_file_path = '%s/job-%03d-command' % (jobs_directory, index)
+            job_exit_code_file_path = '%s/job-%03d-exit-code' % (jobs_directory, index)
+            condor_submit_path= '%s/%03d.sub' % (scripts_directory, index)
+            # Format the command
+            command = self.format_command(self.commands[index], results_directory)
+
+            # Create the script file
+            with open(script_path, 'w') as script_file:
+                args = {
+                    'command': command,
+                    'job_log_file': '%s/log-%03d.txt' % (logs_directory, index),
+                    'job_exit_code_file': job_exit_code_file_path,
+                    'proxy_path': proxy_path or '',
+                    'working_directory': pwd,
+                }
+                script_file.write(template.format(**args))
+            with open(condor_submit_path, 'w') as cscript_file:
+                args = {
+                    'exe_script': script_path,
+                    'job_log_file2': '%s/log-%03d_con.txt' % (logs_directory, index),
+                    'job_log_file3': '%s/log-%03d_conerr.txt' % (logs_directory, index),
+                    'job_log_file4': '%s/log-%03d_conlog.txt' % (logs_directory, index),
+                }
+                cscript_file.write(ctemplate.format(**args))
+            # chmod +x
+            os.chmod(script_path, os.stat(script_path).st_mode | stat.S_IXUSR)
+
+            # For future reference
+            with open(job_command_file_path, 'w') as job_command_file:
+                job_command_file.write(command)
+
+            # Add to script list
+            self.scripts.append(('%s-%03d' % (self.name, index), script_path, submit_log_path, job_file_path))
+            self.cscripts.append((condor_submit_path,job_file_path))
+
+    def submit_c(self):
+        for script, job_file_path,  in self.cscripts:
+            code = str(self.cluster.csubmit(script))
+            if not code:
+                return
+
+            with open(job_file_path, 'w') as job_file:
+                job_file.write(code)
+                print(job_file)
+
+    def submit(self):
+        for name, script, log, job_file_path in self.scripts:
+            code = self.cluster.submit(name, script, log)
+            if not code:
+                return
+           
+            with open(job_file_path, 'w') as job_file:
+                job_file.write(code)
+                print(job_file)
+if __name__ == '__main__':
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-q',
+                        type = str,
+                        default = 'localgrid',
+                        help = 'The queue to submit to',
+                        dest = 'queue')
+    parser.add_argument('name',
+                        type = str,
+                        help = 'A name for the task')
+
+    args = parser.parse_args()
+
+    # Read commands from stdin
+    commands = sys.stdin.read().splitlines()
+    commands = list(filter(lambda str: len(str) != 0, commands))
+
+    cluster = iihe_cluster(args.queue)
+
+    sub = submission(args.name, cluster, commands)
+    sub.prepare()
+    sub.submit_c()

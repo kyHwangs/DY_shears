@@ -1,0 +1,6 @@
+#ifndef CMAKE_CONFIG_H
+#define CMAKE_CONFIG_H
+
+#cmakedefine DEBUG_PRINTOUT
+
+#endif // CMAKE_CONFIG_H

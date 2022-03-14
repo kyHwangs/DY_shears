@@ -1,0 +1,128 @@
+verbosity=1
+histList = histList.txt
+#histList = 
+mainFormat = pdf
+extraFormats =
+preliminaryTag = yes
+DJALOG=false
+DEBUG=false
+
+
+histoDir = HistoFiles_test1_01_10_2018
+fixedDir = 1
+recoCompDir = RecoComparison_test1_01_10_2018
+unfoldDir = UnfoldedFiles_test1_01_10_2018
+combDir = CombiSilver
+LHAlib = /cvmfs/cms.cern.ch/slc5_amd64_gcc434/external/lhapdf/5.8.5/lib/libLHAPDF.so
+doPuReweight = true
+doWhat = DATA
+maxEvents = -1
+#entry_start = 3000
+#entry_start = 3500000
+skipEvents = 0
+maxFiles=-1
+doCentral = 1
+doSysRunning = 1
+whichSyst = 0
+#whichSyst = -1
+#lepSel = DMu
+lepSel = SMu
+algo = Bayes   #Bayes, SVD
+nJobs = 1
+jobNum = 1
+mcYieldScale = -1
+#mcYieldScale = 0.019529
+#additionalPuWeightFile =
+TrackSFBool = 1
+IdSFBool = 1
+IsoSFBool = 1
+TriggerSFBool = 1
+doRochester = 1
+jetMatching = false
+smearJet = true
+unfConf = unfolding.cfg
+#redictions = DYJets_UNFOLDING, DYJets_MLM, DYJets_ZjNNLO
+predictions = DYJets_UNFOLDING
+#scale_DYJets_MLM = 0.96
+#scale_DYJets_UNFOLDING = 0.449929
+#scale_DYJets_GE = 2.
+#scale_DYJets_GEas1135 = 2.
+
+#Switches for dislay of theory uncertainty on data/theory comparison plots.
+#The parameter name must be [sample_name]_unc
+# 0- only statistical uncertainties
+# 1- statistical + scale variations + PDF + alpha_s uncertainties
+# 2- statistical + scale variations for ZjNNLO
+# 3- Geneva (to be implemented)
+DYJets_UNFOLDING_unc = 1
+DYJets_MLM_unc = 0
+DYJets_ZjNNLO_unc = 2
+
+#Reference sample for the comparison plots. Typically "Data", which will
+#shows the measurement and compare the predictions to it.
+#Change it to DY MC sample name for an MC/MC comparison
+ref = Data
+
+#Y-axis ranges for ratio of reco and unfolded histograms:
+minRatioYReco = 0.601
+maxRatioYReco = 1.399
+minRatioYUnf = 0.601
+maxRatioYUnf = 1.399
+
+#channel combination options
+diagXChanCov=1
+fullXChanCov=1
+fullSChanCov=1
+modifiedSWA=1
+
+#If on (1), reweights data with ratio histograms located in _ratio.root files
+#to compute alternative response matrix for systematic uncertainty  estimation
+unfoldUnc = false
+#dataBonzaiDir = /gpfs3/bu/djarcaro/shears/Bonzais/13TeV_2016/Data/v5/Catalogs
+#dataBonzaiDir = /gpfs3/bu/djarcaro/shears/Bonzais/13TeV_2016/Data/v5.2/Catalogs
+#dataBonzaiDir = /store/group/phys_smp/AnalysisFramework/Bonzai/13TeV_2016/Data/v2.1/Catalogs
+dataBonzaiDir = /gpfs3/bu/djarcaro/shears/Bonzais/13TeV_2016/Data/v5.3/Catalogs
+mcBonzaiDir = /gpfs3/bu/djarcaro/shears/Bonzais/13TeV_2016/MC/v3.1/Catalogs
+#mcBonzaiDir = /store/group/phys_smp/AnalysisFramework/Bonzai/13TeV_2016_MC/MC/v2/Catalogs
+#sample_Data = Bonzais-DoubleMuon-all-VJetPruner-%s.txt
+sample_Data = Bonzais-SingleMuon-all-VJetPruner-%s-test.txt
+sample_DYJets_UNFOLDING = Bonzais-DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8-all-VJetPruner-DMuUnf.txt
+sample_DYJets_MLM = Bonzais-DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8-all-VJetPruner-DMuUnf.txt
+sample_ST_sch = Bonzais-ST_s-channel_4f_leptonDecays_13TeV-amcatnlo-pythia8_TuneCUETP8M1-all-VJetPruner-DMu.txt
+sample_ST_tch = Bonzais-ST_t-channel_antitop_4f_inclusiveDecays_TuneCUETP8M2T4_13TeV-powhegV2-madspin-all-VJetPruner-DMu.txt
+sample_STbar_tW  = Bonzais-ST_tW_antitop_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M2T4-all-VJetPruner-DMu.txt
+sample_ST_tW     = Bonzais-ST_tW_top_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M2T4-all-VJetPruner-DMu.txt
+sample_WToLNu    = Bonzais-WJetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8-all-VJetPruner-DMu.txt
+sample_WWTo2L2Nu = Bonzais-WWTo2L2Nu_13TeV-powheg-all-VJetPruner-DMu.txt
+sample_WZ        = Bonzais-WZ_TuneCUETP8M1_13TeV-pythia8-all-VJetPruner-DMu.txt
+sample_ZZ        = Bonzais-ZZ_TuneCUETP8M1_13TeV-pythia8-all-VJetPruner-DMu.txt
+sample_TT        = Bonzais-TT_TuneCUETP8M2T4_13TeV-powheg-pythia8-all-VJetPruner-DMuMass.txt
+
+#runLetters = BCDEF
+#runLetters = GH
+runLetters = BCDEFGH
+
+triggersRunB = HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL, HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL
+triggersRunC = HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL, HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL
+triggersRunD = HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL, HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL
+triggersRunE = HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL, HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL
+triggersRunF = HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL, HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL
+triggersRunG = HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ, HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ
+triggersRunH = HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ, HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ
+
+energy = 13
+lumi = -1
+#lumi = 35290.0
+lumiUnc = 0.025
+elEffUnc = 0.005
+muEffUnc =0.0229
+jetEtaMax = 24
+jetPtMin = 30
+ZMassMin = 71
+ZMassMax = 111
+lepPtMin = 20 
+lepEtaMax = 24
+muRelIso = 0.25
+elRelIso  = 0.15
+muR = 1.0 
+muF = 1.0

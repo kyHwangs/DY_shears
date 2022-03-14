@@ -1,0 +1,39 @@
+Name: CMS_2016_I1610623
+Year: 2016
+Summary: Measurement of the differential cross sections for the associated production of a W boson and jets in proton-proton collisions at $\sqrt{s} = 13\,\mathrm{TeV}$
+Experiment: CMS
+Collider: LHC
+InspireID: I1610623
+Status: CMS INTERNAL
+Authors:
+  - Philippe Gras (philippe.gras@cern.ch)
+  - Bhawandeep Uppal (b.bhawandeep@cern.ch)
+References:
+  - http://inspirehep.net/record/1610623
+RunInfo:
+  'Run MC generators with W decaying leptonically into a muon and a neutrino at 13 TeV CoM energy.'
+NeedCrossSection: yes
+Beams: [p+, p+]
+Energies: [13000]
+Description:
+'A measurement of the differential cross sections for a W boson produced in association with jets in the muon decay channel is presented. The measurement is based on 13$\,$TeV proton-proton collision data corresponding to an integrated luminosity of
+$2.2\,\mathrm{fb}^{-1}$, recorded by the CMS detector at the LHC. The cross sections are reported as functions of jet multiplicity, jet transverse momentum $p_{\mathrm{T}}$ , jet rapidity, the scalar $p_{\mathrm{T}}$ sum of the jets, and angular correlations between the muon and the jet for different jet multiplicities. The measured cross sections are in agreement with predictions that include multileg leading-order (LO) and next-to-LO matrix element calculations interfaced with parton showers, as well as a next-to-next-to-LO calculation for the W boson and one jet production.'
+
+Cuts: 'Leading muon with $p_T > 25$ GeV and $\eta < 2.4$
+     $m_T(\mu,\nu) > 50$ GeV
+     Jets $p_T > 30$ GeV and $|\eta| < 2.4$
+     $\Delta{R}($lepton,jet$) > 0.4$'
+BibKey: Sirunyan:2017wgx
+BibTeX: '@article{Sirunyan:2017wgx,
+      author         = "Sirunyan, Albert M and others",
+      title          = "{Measurement of the differential cross sections for the
+                        associated production of a W boson and jets in
+                        proton-proton collisions at sqrt(s) = 13 TeV}",
+      collaboration  = "CMS",
+      year           = "2017",
+      eprint         = "1707.05979",
+      archivePrefix  = "arXiv",
+      primaryClass   = "hep-ex",
+      reportNumber   = "CMS-SMP-16-005, CERN-EP-2017-142",
+      SLACcitation   = "%%CITATION = ARXIV:1707.05979;%%"
+}'

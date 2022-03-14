@@ -1,0 +1,108 @@
+#!/bin/env python
+
+import os
+import sys
+import imp
+import re
+import argparse
+
+try:
+    backup_das_path = "/cvmfs/cms.cern.ch/slc6_amd64_gcc481/cms/das_client/v02.17.04/bin"
+    das_path =  os.path.realpath(imp.find_module("das_client")[1])
+    m = re.search(r"/v(\d{2})\.(\d{2})\.(\d{2}).*/", das_path)
+    if m:
+        vers = int(m.groups()[0])*100*100 + int(m.groups()[1])*100 + int(m.groups()[0])
+        if vers < 21704:
+            sys.stderr.write("Warning: version of the das client from the default environment is too old. Version v02.17.04 from %s will be used.\n" %  backup_das_path)
+            sys.path.insert(0, backup_das_path)
+    else:
+        sys.stderr.write("Warning: failed to check the das client version.\n")
+    import das_client
+
+except ImportError:
+    sys.stderr.write("\nFatal error: CMSSW environment needs to be set before running this script.\n")
+    sys.exit(1)
+
+def db_das_query3(query, att_list):
+    """Performs a query to the DAQ database"""
+    host='https://cmsweb.cern.ch'
+    idx=0
+    limit=0
+    debug=False
+    fields = []
+    for att in att_list:
+        obj, item = att.split(".")
+        fields.append([obj, item])
+
+    if args.verbosity > 0:
+        sys.stderr.write("\nDAS query: %s\n" % query)  
+    das_res=das_client.get_data(host, query, idx, limit, debug, ckey = das_ckey, cert = das_cert)
+    res = {}
+    
+    if not das_res.has_key('data'):
+        sys.stderr.write("\nWarning: das query '%s% failed." % query)
+        return res
+
+    data = das_res['data']
+    for f in fields:
+        obj, item = f
+	nFound = 0
+        for r in data:
+            if obj in r:
+                load = r[obj]
+                for x in load:
+                    if item in x:
+                        if nFound == 0:
+                            res["%s.%s" %  (obj, item)] =  x[item]
+                        else:
+                            if nFound == 1:
+                                res["%s.%s" %  (obj, item)] = [res["%s.%s" %  (obj, item)]]
+                            res["%s.%s" %  (obj, item)].append(x[item])
+                        nFound += 1
+                        #endif
+                    #endif
+                #next x
+            #endif
+        #next r
+    #next f
+    return res
+
+
+def parse_command_line():
+    """Parse the command line parser"""
+    parser = argparse.ArgumentParser(description='Retrieves from DAS database the run range(s) of one or several real data datasets. With no argument the dataset list is read from standard input (one dataset per line). This script can be used to get the range field to include in the grow_baobab datasets.txt catalog file. ')
+
+    parser.add_argument('dataset', action='store', default=None, nargs='*',
+                        help='Full dataset name. E.g. /DoubleMuon/Run2016B-03Feb2017_ver2-v2/MINIAOD.')
+
+    parser.add_argument('-v', action='count', dest='verbosity',
+                        help="Increase verbosity")
+			
+    return parser.parse_args()
+
+
+args = parse_command_line()
+
+das_ckey = das_client.x509()
+das_cert = das_ckey
+das_client.check_glidein()
+
+
+def process_one_ds(dataset):
+    sys.stdout.write("%s\t" % dataset)
+    res = db_das_query3('run dataset=%s' % dataset, ["run.run_number"])
+    try:
+        r = res["run.run_number"]
+        print "%d-%d" %(min(r), max(r))
+    except KeyError:
+        print "Datast not found." % dataset
+#enddef
+
+if args.dataset:
+    for ds in args.dataset:
+        process_one_ds(ds)
+else:
+    for l in sys.stdin:
+        process_one_ds(l.strip())
+    #next l
+#endif

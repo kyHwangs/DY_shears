@@ -1,0 +1,303 @@
+#!/bin/bash
+
+myself="`readlink -f "$0"`"
+mybasename="`basename "$myself"`"
+mydir="`dirname "$myself"`"
+warden_lock="$mydir/.warden.lock"
+warden_stop="$mydir/.stop-warden"
+warden_pause="$mydir/.pause-warden"
+
+source "$mydir/prodrc"
+
+mailbox="~shearsop/work/.shears-mailbox"
+
+die(){
+    echo -e "$@" 1>&2
+    exit 2
+}
+
+source /cvmfs/cms.cern.ch/crab3/crab.sh
+
+[ $? = 0 ] || die "Failed to set CMSSW runtime environment. Is directory /afs/cern.ch/user/s/shearsop/work/baobab-prod/CMSS existing?"
+
+eval "$tmp"
+
+#echo CMSSW_BASE: $CMSSW_BASE
+
+[ $? = 0 ] || die "Failed to set CMSSW runtime environment."
+
+function underline(){
+    sed 'p
+s/./-/g'
+}
+
+function run(){
+    for d in $dirs; do
+	check_warden_stop && return
+	{ echo $d | underline; echo; } | tee -a .warden_summary
+	(cd $d && {
+	echo "Checking status of running tasks..."
+	xsec_file=xsec.txt
+	[ -f $xsec_file ] && xsec_opt="--cross-section $xsec_file" || xsec_opt=""
+	("$mydir/grow_baobabs" --check --no-crab-report-for-mc --cross-sections /afs/cern.ch/work/s/shearsop/private/baobab-prod/shears/ntuple_production/xsec.txt --report "$mailbox")
+	echo "Checking if some tasks need to be submitted..."
+	("$mydir/grow_baobabs" --new-jobs)
+	echo "Task summary:"
+	("$mydir/grow_baobabs" --list) | tee -a .warden_summary
+	    }
+	)
+cat<<EOF | tee -a .warden_summary
+======================================================================
+
+
+EOF
+    done	
+
+}
+
+function check_warden_stop(){
+    if [ -f "$warden_stop" ]; then
+	eval "killer=`stat -c '(%u %U)' "$warden_stop"`"
+	echo "Stop requested by `id_to_user_name ${killer[0]}` (${killer[1]}). Exiting." 
+	do_run=n
+	return 0
+    fi
+    return 1
+}
+
+function check_warden_pause(){
+    [ -f "$warden_pause" ] || return 0
+    pause_requester="`stat -c %U "$warden_pause"`"
+    read dt1 < "$warden_pause"
+    dt1=$((dt1*60))
+    rm "$warden_pause"
+    [ -f "$warden_pause" ] && { echo "Error: failed to remove $warden_pause file."; return 1;}
+    in_pause=y
+    if [ "$dt1" -gt "$dt" ]; then
+	dt="$dt1"
+    fi
+    now="`date +%s`"
+    echo "Pause requested by $pause_requester. Next check on `date -d @$((now+dt))`."
+}
+
+#retrieves the name of the user running this script:
+function user_name(){
+#    phonebook --uid `id -u` --terse firstname --terse surname | tr ';' ' '
+    id_to_user_name `id -u`
+}
+
+function id_to_user_name(){
+    phonebook --uid "$1" --terse firstname --terse surname | tr ';' ' '
+}
+
+
+function to_min(){
+    exp=`echo "$1" | sed 's/w/*10080+/g
+s/d/*1440+/g
+s/h/*60+/g
+s/m/+/g
+s/[[:digit:]]*s//g
+s/+$//g'`
+    res="`echo "$exp" | bc -l`"
+    if [ "$res" = 0 ]; then
+	echo "Bad time expression" 2>&1
+	echo 1440
+    else
+	echo "$res"
+    fi
+}
+
+#function to_sec(){
+#    exp=`echo "$1" | sed 's/w/604800+/g
+#s/d/*86400+/g
+#s/h/*3600+/g
+#s/m/*60+/g
+#s/s/+/g
+#s/+$//g'`
+#    res="`echo "$exp" | bc -l`"
+#    if [ "$res" = 0 ]; then
+#	echo "Bad time expression" 2>&1
+#	echo 300
+#    else
+#	echo "$res"
+#    fi
+#}
+
+
+function help(){
+    fmt -w ${COLUMNS:-80} <<EOF
+Usage: warden [--loop CYCLE_TIME] [--report EVERY_CYCLE]
+       warden --stop
+       warden --pause TIME
+
+Shears framework [1]. Checks the status of Boabab production and takes the required actions: submission for new data or dataset, closing ending tasks, reporting new ntuple sets. The command uses the prodrc configuration file located in the same directory that contains the command. In this file must be defined the dirs shell variable containing a whitespace-separated of the direcroty to monitor.
+
+With the --loop option, the command runs every CYCLE_TIME. CYCLE_TIME default unit is minutes, w (week), d (day), h (hour) can be used and units can be combined, as 3d12h for 3 days 12 hours.
+
+The --report allows email notification. The notifications are sent at EVERY_CYCLE iterations of the loop, use the value 1 for a promt notification.
+
+The second usage form (--stop option) stops a running warden commands. The command will work on two conditions: the warden command is located in the same directory that when it was started and you have write access to this directory.
+
+The third option can be used to pause the monitoring for a given amount of time. The time format is the same as for --loop option.
+
+Note: the command needs the grid authentication proxy to run and is not able to renew it on its own.
+
+EOF
+}
+
+temp=`getopt -o hl:pr:sp: --long help,loop:,report:,stop,pause: \
+     -n "$mybasename" -- "$@"`
+
+if [ $? != 0 ] ; then echo "Terminating..." >&2 ; exit 1 ; fi
+
+    # Note the quotes around `$TEMP': they are essential!
+eval set -- "$temp"
+
+in_pause=n
+unset pause_requester
+
+unset loop
+unset report_every
+unset stop_request
+unset pause
+while true ; do
+    case "$1" in
+        -h|--help) help; exit 0;; 
+        -l|--loop) loop="$2"; shift 2;;
+	-r|--report) report_every="$2"; shift 2;;
+	-s|--stop) stop_request=1; shift;;
+	-p|--pause) pause="$2"; shift 2;;
+        --) shift ; break ;; #end of options. It remains only the args.
+        *) echo "Internal error!" ; exit 1 ;;
+    esac
+done
+
+
+if [ "$stop_request" = 1 ]; then
+    [ -f "$warden_lock" ] || die "No lock file found. Cannot stop warden. Is warden running?"
+    read h pid < "$warden_lock"
+    tmp="`ssh "$h" "ps -p $pid -o comm; true"`"
+    [ $? = 0 ] || die "Failed to check if warden is running."
+    echo "$tmp" |  grep -q warden
+    [ $? = 0 ] || { echo "Warden is not running."; exit 1; }
+    touch "$warden_stop"
+    echo -n "Stop request sent."
+    i=0
+    imax=300
+    while [ $i -lt $imax ] ; do
+	[ -f $warden_lock ] || { echo " Done"; exit 0;}
+	sleep 1
+	echo -n "."
+    done
+    echo "Failed to stop warden."
+exit 0
+fi
+
+if [ -n "$pause" ]; then
+    pause=`to_min "$pause"`
+    echo "$pause" > "$warden_pause"
+    exit 0
+fi
+
+echo "$report_every" | grep -q '^[[:digit:]]*$' || { help; exit 1; }
+
+
+if [ -f "$warden_lock" ]; then
+    read h pid < "$warden_lock"
+    echo "Found a warden lock file. Checking if warden is running on host $h with pid $pid..."
+    tmp="`ssh "$h" "ps -p $pid -o comm h; true"`"
+    [ $? = 0 ] || die "Failed to check if warden is running."
+    echo "$tmp" |  grep -q warden
+    [ $? = 0 ] && die "\nWarden is already running on host $h under pid $pid using same configuration file $mydir/prodrc. You should first stop the first instance.\n\nNote if warden is working in loop mode under another username, you can still stop it with the command warden --stop. "
+fi
+
+(hostname | tr '\n' ' '; echo $$) > "$warden_lock"
+
+trap "makeitnow=1" SIGHUP
+
+function onexit(){
+    rm "$warden_lock"
+    rm "$warden_stop" 2> /dev/null
+}
+
+trap onexit EXIT
+
+[ -n "$loop" ] && cycle="`to_min $loop`"
+i=0
+do_run=y
+
+while [ "$do_run" = y ]; do
+    
+    [ -z "$loop" ] && do_run=n
+
+    if [ "$in_pause" = y ]; then
+	in_pause=n
+	#we were in pause. Notify user
+	echo "Warden notification: pause ended and resuming task monitoring." | write "$pause_requester"
+	echo "Task check in 10 seconds..."
+	sleep 10
+    fi	
+    
+    t=`date +%s`
+    makeitnow=0
+    
+    cat > .warden_last_log <<EOF
+File generated automatically by the warden command. The is ovewritten at each run cycle.
+
+EOF
+    cat > .warden_summary <<EOF
+ ======================================================================
+| Warden from the Shears framework                                     |
+|                                                                      |
+|       Summary of the current Boabab productions                      |
+|                                                                      |
+ ======================================================================
+
+Productions monitored by warden:
+
+EOF
+
+for d in $dirs; do
+    echo -n "$d " >> .warden_summary
+    (cd $d && "$mydir/grow_baobabs" --show-catalog | awk -F / '{f=NF-2; if(f>0) print $f}') >> .warden_summary
+done
+
+cat >> .warden_summary <<EOF
+
+Last update: `date`
+
+Operator: `user_name`
+
+Report produced from: `hostname`
+
+EOF
+    
+    run | tee -a .warden_last_log
+    mv .warden_last_log warden_last_log
+    mv .warden_summary warden_summary
+
+    cp -a warden_last_log /afs/cern.ch/user/s/shearsop/www/boabab_current_prod_log.txt
+    cp -a  warden_summary /afs/cern.ch/user/s/shearsop/www/boabab_current_prod_summary.txt
+    i=$((i+1))
+
+    if [ "$i" = "$report_every" ]; then
+	echo "Checking for notifications to send."
+	"$mydir/send_shears_emails"
+	i=0
+    fi
+    
+    [ -z "$loop" ] && break
+
+    t1=`date +%s`
+    dt=$((60*cycle+t-t1))
+    echo "`date +'%F %R:%S'` sleeping $dt s... send me a SIGHUP to wake me up (my pid is $$, kill -s SIGHUP $$)..."
+    while [ "$dt" -gt 0 -a "$makeitnow" != 1 ]; do
+        sleep 1
+	check_warden_stop && break
+        t1=`date +%s`
+        dt=$((60*cycle+t-t1))
+	check_warden_pause
+    done
+done
+
+

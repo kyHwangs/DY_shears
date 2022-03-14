@@ -1,0 +1,113 @@
+#!/bin/bash
+
+if [  $# -lt 1 -o "$1" = -h -o "$1" = --help ]; then
+   cat <<EOF
+Usage: getlumi JSON_FILE
+
+Calculates processed integrated luminosity from a crab job lumi section report.
+
+EOF
+fi
+
+BRILCAL_INSTALL_DIR="$HOME/.local"
+
+export PATH="$BRILCAL_INSTALL_DIR"/bin:/afs/cern.ch/cms/lumi/brilconda-1.1.7/bin:$PATH
+
+
+if [ "$1" = --install ]; then
+    if [ -e "$BRILCAL_INSTALL_DIR" ]; then
+    	echo "Delete directory $BRILCAL_INSTALL_DIR (y/n) ?" 1>&2
+    	read n
+    	if [ $n = "y" -o $n = "Y" ]; then
+	   rm -r "$BRILCAL_INSTALL_DIR"
+    	else
+    	    echo "Aborting installation." 1>&2
+    	fi
+    
+        pip install --install-option="--prefix=$BRILCAL_INSTALL_DIR" brilws
+    fi
+    exit $?
+fi
+
+if [ "$1" = -r ]; then
+    recorded_only=y
+    shift
+else
+    recorded_only=n
+fi
+
+filter(){
+    if [ "$recorded_only" = y ]; then
+#	tail -n 2 | head -n 1 | awk -F \| '{printf "%f\n", $7/1.e6}'
+	#we look for line Summary, then for a line containing totrecorded (in the table header) and we skip
+#        one line corresponding to the header separation line:
+	awk -F \| '/#Summary/{a=a+1} /totrecorded/{a=a+1} {if(a>=2) a=a+1} {if(a==5) print $7/1.e6}'
+    else
+	cat
+    fi
+}
+json="$1"
+
+run(){
+json="$1"
+python <<EOF
+import json
+jsonFile="$json"
+try:
+    r = json.load(open(jsonFile))
+    r = map(int, r.keys())
+except (IOError, ValueError):
+    system.stderr.write("\nFailed to read run list from json file %s.\n\n" % jsonFile)
+run_min=min(r)
+run_max=max(r)
+if run_min > 256600 and  run_max < 263798:
+    print 2015
+elif run_min >= 263798 and run_max < 286655:
+    print 2016
+elif run_min >= 286655 and run_max<306546 :
+    print 2017
+elif run_min >= 306546:
+    print 20175
+else:
+    print "? (run min: %d, run max: %d)" % (run_min, run_max)
+EOF
+}
+
+dataset="`run "$json"`"
+
+if [ "$dataset" = 2015 ]; then
+#Normtag of 2015 data Updated on Mar. 31, 16
+    normtag=/afs/cern.ch/user/l/lumipro/public/normtag_file/moriond16_normtag.json
+#Update on Apr. 11, 2016. See https://hypernews.cern.ch/HyperNews/CMS/get/physics-announcements/4482.html
+    normtag=/afs/cern.ch/user/l/lumipro/public/Normtags/normtag_PHYSICS.json
+elif [ "$dataset" = 2016 ]; then
+    normtag=/afs/cern.ch/user/l/lumipro/public/Normtags/normtag_PHYSICS.json
+elif [ "$dataset" = 2017 ]; then
+    #normtag=/afs/cern.ch/user/l/lumipro/public/normtag_file/normtag_BRIL.json
+    normtag=/cvmfs/cms-bril.cern.ch/cms-lumi-pog/Normtags/normtag_BRIL.json
+elif [ "$dataset" = 20175 ]; then
+    normtag=
+else
+    echo "Failed to determine data period and normtag file." 1>&2
+    exit 1
+fi
+
+#python /afs/cern.ch/user/m/marlow/public/lcr2/lcr2.py -i  "$json" | filter
+
+#check if brilcalc is already installed with expected version
+install=n
+if ! [ -x "$BRILCAL_INSTALL_DIR/bin/brilcalc" ]; then
+    echo "$BRILCAL_INSTALL_DIR/bin/brilcalc was not found. You need to install brilcal using the command getlumi --install." 1>&2
+    exit 1
+fi
+
+#brilcalc lumi -i "$json" -n 0.962 | filter
+#before Dec. 6, 15:
+#brilcalc lumi --normtag /afs/cern.ch/user/c/cmsbril/public/normtag_json/OfflineNormtagV1.json -i "$json"  | filter
+#Updated on Dec. 6, 15 to normtag announced in https://hypernews.cern.ch/HyperNews/CMS/get/luminosity/544.html
+#brilcalc lumi --normtag /afs/cern.ch/user/l/lumipro/public/normtag_file/OfflineNormtagV2.json -i "$json"  | filter
+echo "Using normtag $normtag" 1>&2
+#$BRILCAL_INSTALL_DIR/bin/brilcalc lumi --normtag  "$normtag" -i "$1"
+$BRILCAL_INSTALL_DIR/bin/brilcalc lumi -b "STABLE BEAMS" -i $1 --normtag "$normtag"| filter 
+
+#pip uninstall brilws

@@ -1,0 +1,35 @@
+Name: CMS_2016_I1479624
+Year: 2016
+Summary: Differential cross section for the production of a W ($\rightarrow \mu \nu$) boson in association with jets at $\sqrt{s} = 13\,\mathrm{TeV}$
+Experiment: CMS
+Collider: LHC
+InspireID: I1479624
+Status: CMS INTERNAL
+Authors:
+  - Philippe Gras (philippe.gras@cern.ch)
+  - Bhawandeep Uppal (b.bhawandeep@cern.ch)
+References:
+  - http://cds.cern.ch/record/2204927
+  - http://inspirehep.net/record/1479624
+RunInfo:
+  'Run MC generators with W decaying leptonically into a muon and a neutrino at 13 TeV CoM energy.'
+NeedCrossSection: yes
+Beams: [p+, p+]
+Energies: [13000]
+Description:
+'A measurement of the differential cross sections for a $\mathrm{W}(\rightarrow \mu\nu)$ boson produced in association with jets is presented. The measurement is based on the $13~\mathrm{TeV}$ proton-proton collisions data corresponding to an integrated luminosity of $2.5~\mathrm{fb}^{-1}$ recorded by the CMS detector at the CERN LHC. The cross sections are reported as a function of jet multiplicity, the jet transverse momenta, the jet rapidity, and the scalar sum of the jet transverse momenta for different jet multiplicities. The measured cross sections are compared with the predictions that include multileg leading order and next-to-leading order matrix element calculations interfaced with parton showers and a next-to-next-to-leading order calculation for W + 1 jet.'
+Cuts: 'Leading muon with $p_T > 25$ GeV and $\eta < 2.4$
+      $m_T(\mu,\nu) > 50$ GeV
+     Jets $p_T > 30$ GeV and $|\eta| < 2.4$
+     $\Delta{R}($lepton,jet$) > 0.4$'
+BibKey: CMS:2016srs
+BibTeX: '@article{CMS:2016srs,
+      author         = "CMS Collaboration",
+      title          = "{Measurement of the differential cross section for the
+                        production of a W (rightarrow munu) boson in association
+                        with jets at sqrt(s) = 13 TeV}",
+      collaboration  = "CMS",
+      year           = "2016",
+      reportNumber   = "CMS-PAS-SMP-16-005",
+      SLACcitation   = "%%CITATION = CMS-PAS-SMP-16-005;%%"
+}'

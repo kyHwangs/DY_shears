@@ -1,0 +1,79 @@
+# primary dataset: /SinglePhoton/Run2016*-05Feb2018*-v1/NANOAOD
+* data type: data
+* primary events: 228260900
+* primary files: 45
+* lumi: 36330.0
+# JSON: /afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions16/13TeV/ReReco/Final/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt
+
+############
+#RunB ver1##
+############
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2016preLegacy/data/json/NanoBonzai14fev_SinglePhoton_data2016Bver1_PreL/SinglePhoton/NanoTestPost/220214_104415/0000/tree_1.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2016preLegacy/data/json/NanoBonzai14fev_SinglePhoton_data2016Bver1_PreL/SinglePhoton/NanoTestPost/220214_104415/0000/tree_2.root
+############
+#RunB ver2##
+############
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2016preLegacy/data/json/NanoBonzai14fev_SinglePhoton_data2016Bver2_PreL/SinglePhoton/NanoTestPost/220214_104326/0000/tree_1.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2016preLegacy/data/json/NanoBonzai14fev_SinglePhoton_data2016Bver2_PreL/SinglePhoton/NanoTestPost/220214_104326/0000/tree_2.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2016preLegacy/data/json/NanoBonzai14fev_SinglePhoton_data2016Bver2_PreL/SinglePhoton/NanoTestPost/220214_104326/0000/tree_3.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2016preLegacy/data/json/NanoBonzai14fev_SinglePhoton_data2016Bver2_PreL/SinglePhoton/NanoTestPost/220214_104326/0000/tree_4.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2016preLegacy/data/json/NanoBonzai14fev_SinglePhoton_data2016Bver2_PreL/SinglePhoton/NanoTestPost/220214_104326/0000/tree_5.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2016preLegacy/data/json/NanoBonzai14fev_SinglePhoton_data2016Bver2_PreL/SinglePhoton/NanoTestPost/220214_104326/0000/tree_6.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2016preLegacy/data/json/NanoBonzai14fev_SinglePhoton_data2016Bver2_PreL/SinglePhoton/NanoTestPost/220214_104326/0000/tree_7.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2016preLegacy/data/json/NanoBonzai14fev_SinglePhoton_data2016Bver2_PreL/SinglePhoton/NanoTestPost/220214_104326/0000/tree_8.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2016preLegacy/data/json/NanoBonzai14fev_SinglePhoton_data2016Bver2_PreL/SinglePhoton/NanoTestPost/220214_104326/0000/tree_9.root
+#######
+#RunC##
+#######
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2016preLegacy/data/json/NanoBonzai14fev_SinglePhoton_data2016C_PreL/SinglePhoton/NanoTestPost/220214_104233/0000/tree_1.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2016preLegacy/data/json/NanoBonzai14fev_SinglePhoton_data2016C_PreL/SinglePhoton/NanoTestPost/220214_104233/0000/tree_2.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2016preLegacy/data/json/NanoBonzai14fev_SinglePhoton_data2016C_PreL/SinglePhoton/NanoTestPost/220214_104233/0000/tree_3.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2016preLegacy/data/json/NanoBonzai14fev_SinglePhoton_data2016C_PreL/SinglePhoton/NanoTestPost/220214_104233/0000/tree_4.root
+#######
+#RunD##
+#######
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2016preLegacy/data/json/NanoBonzai14fev_SinglePhoton_data2016D_PreL/SinglePhoton/NanoTestPost/220214_103845/0000/tree_1.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2016preLegacy/data/json/NanoBonzai14fev_SinglePhoton_data2016D_PreL/SinglePhoton/NanoTestPost/220214_103845/0000/tree_2.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2016preLegacy/data/json/NanoBonzai14fev_SinglePhoton_data2016D_PreL/SinglePhoton/NanoTestPost/220214_103845/0000/tree_3.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2016preLegacy/data/json/NanoBonzai14fev_SinglePhoton_data2016D_PreL/SinglePhoton/NanoTestPost/220214_103845/0000/tree_4.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2016preLegacy/data/json/NanoBonzai14fev_SinglePhoton_data2016D_PreL/SinglePhoton/NanoTestPost/220214_103845/0000/tree_5.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2016preLegacy/data/json/NanoBonzai14fev_SinglePhoton_data2016D_PreL/SinglePhoton/NanoTestPost/220214_103845/0000/tree_6.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2016preLegacy/data/json/NanoBonzai14fev_SinglePhoton_data2016D_PreL/SinglePhoton/NanoTestPost/220214_103845/0000/tree_7.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2016preLegacy/data/json/NanoBonzai14fev_SinglePhoton_data2016D_PreL/SinglePhoton/NanoTestPost/220214_103845/0000/tree_8.root
+#######
+#RunE##
+#######
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2016preLegacy/data/json/NanoBonzai14fev_SinglePhoton_data2016E_PreL/SinglePhoton/NanoTestPost/220214_103832/0000/tree_1.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2016preLegacy/data/json/NanoBonzai14fev_SinglePhoton_data2016E_PreL/SinglePhoton/NanoTestPost/220214_103832/0000/tree_2.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2016preLegacy/data/json/NanoBonzai14fev_SinglePhoton_data2016E_PreL/SinglePhoton/NanoTestPost/220214_103832/0000/tree_3.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2016preLegacy/data/json/NanoBonzai14fev_SinglePhoton_data2016E_PreL/SinglePhoton/NanoTestPost/220214_103832/0000/tree_4.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2016preLegacy/data/json/NanoBonzai14fev_SinglePhoton_data2016E_PreL/SinglePhoton/NanoTestPost/220214_103832/0000/tree_5.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2016preLegacy/data/json/NanoBonzai14fev_SinglePhoton_data2016E_PreL/SinglePhoton/NanoTestPost/220214_103832/0000/tree_6.root
+#######
+#RunF##
+#######
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2016preLegacy/data/json/NanoBonzai14fev_SinglePhoton_data2016F_PreL/SinglePhoton/NanoTestPost/220214_103516/0000/tree_1.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2016preLegacy/data/json/NanoBonzai14fev_SinglePhoton_data2016F_PreL/SinglePhoton/NanoTestPost/220214_103516/0000/tree_2.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2016preLegacy/data/json/NanoBonzai14fev_SinglePhoton_data2016F_PreL/SinglePhoton/NanoTestPost/220214_103516/0000/tree_3.root
+#######
+#RunG##
+#######
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2016preLegacy/data/json/NanoBonzai14fev_SinglePhoton_data2016G_PreL/SinglePhoton/NanoTestPost/220214_103459/0000/tree_1.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2016preLegacy/data/json/NanoBonzai14fev_SinglePhoton_data2016G_PreL/SinglePhoton/NanoTestPost/220214_103459/0000/tree_2.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2016preLegacy/data/json/NanoBonzai14fev_SinglePhoton_data2016G_PreL/SinglePhoton/NanoTestPost/220214_103459/0000/tree_3.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2016preLegacy/data/json/NanoBonzai14fev_SinglePhoton_data2016G_PreL/SinglePhoton/NanoTestPost/220214_103459/0000/tree_4.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2016preLegacy/data/json/NanoBonzai14fev_SinglePhoton_data2016G_PreL/SinglePhoton/NanoTestPost/220214_103459/0000/tree_5.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2016preLegacy/data/json/NanoBonzai14fev_SinglePhoton_data2016G_PreL/SinglePhoton/NanoTestPost/220214_103459/0000/tree_6.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2016preLegacy/data/json/NanoBonzai14fev_SinglePhoton_data2016G_PreL/SinglePhoton/NanoTestPost/220214_103459/0000/tree_7.root
+############
+#RunH ver2##
+############
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2016preLegacy/data/json/NanoBonzai14fev_SinglePhoton_data2016Hver2_PreL/SinglePhoton/NanoTestPost/220214_103327/0000/tree_1.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2016preLegacy/data/json/NanoBonzai14fev_SinglePhoton_data2016Hver2_PreL/SinglePhoton/NanoTestPost/220214_103327/0000/tree_2.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2016preLegacy/data/json/NanoBonzai14fev_SinglePhoton_data2016Hver2_PreL/SinglePhoton/NanoTestPost/220214_103327/0000/tree_3.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2016preLegacy/data/json/NanoBonzai14fev_SinglePhoton_data2016Hver2_PreL/SinglePhoton/NanoTestPost/220214_103327/0000/tree_4.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2016preLegacy/data/json/NanoBonzai14fev_SinglePhoton_data2016Hver2_PreL/SinglePhoton/NanoTestPost/220214_103327/0000/tree_5.root
+############
+#RunH ver3##
+############
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/2016preLegacy/data/json/NanoBonzai14fev_SinglePhoton_data2016Hver3_PreL/SinglePhoton/NanoTestPost/220214_103303/0000/tree_1.root

@@ -1,0 +1,119 @@
+#!/bin/bash
+myself="`readlink -f "$0"`"
+mydir="`dirname "$myself"`"
+if [ "$1" = -f ]; then
+    force=y
+    shift
+else
+    force=n
+fi
+
+era="$1"
+
+eos_space=/store/group/phys_smp/AnalysisFramework
+workdir=/afs/cern.ch/user/s/shearsop/work
+
+if [ -z "$era" -o "$era" = -h -o "$era" = --help ]; then
+   cat <<EOF
+Usage: new-era [-f] era-name
+
+Description: set up SMP Shears ntuple production file directories for a new era (new beam conditions).
+
+Beware: this command will create directories and files in the SMP group EOS area, $eos_space and in the common AFS space $workdir.
+
+Option:
+
+  -f normally the command will stop on error. With this option it will proceed until the end even in case a step failed.
+
+EOF
+
+exit 0
+fi
+
+eos(){
+    /afs/cern.ch/project/eos/installation/pro/bin/eos.select  "$@"
+}
+
+die(){
+    echo "$@" 1>&2
+    exit 1
+}
+
+mkeosdir(){
+    for d in "$@"; do
+	if eos ls "$d" 1>/dev/null 2>&1; then
+	    echo "The $d directory already exists on EOS!" 1>&2
+	elif eos mkdir -p "$d"; then
+	    echo "The $d directory was created on EOS."
+	else
+	    echo "Failed to create directory $1 on EOS." 1>&2
+	    [ "$force" = y ] || exit 1
+	fi
+    done
+}
+
+
+mklocaldir(){
+    for d in "$@"; do
+	if [ -d "$d" ]; then
+	    echo "The $d directory already exists!" 1>&2
+	elif mkdir -p "$d"; then
+	    echo "The $d directory was created."
+	else
+	    echo "Failed to create directory $1." 1>&2
+	    [ "$force" = y ] || exit 1
+	fi
+    done
+}
+
+
+mkeosdir /"$eos_space"/{Baobab,Bonzai}/"$era"/MC/v1/{Catalogs,Ntuple}
+mkeosdir /"$eos_space"/{Baobab,Bonzai}/"$era"/Data/v1/{Catalogs,Ntuple}
+mklocaldir "$workdir"/{baobab-prod,bonzai-prod}/"$era"/{MC,Data}
+
+unset TMPFILE
+
+trap cleanup 0
+cleanup(){
+    [ -n "$TMPFILE" ] && [ -f "$TMPFILE" ] && rm "$TMPFILE";
+}
+
+TMPFILE=`mktemp`
+
+(for typ in MC Data; do
+    d=/afs/cern.ch/user/p/pgras/shearsop/work/baobab-prod/"$era"/$typ
+    cd $d || { echo "Failed to enter directory $d"; continue; }
+    ln -s "$mydir/grow_baobabs_cfg.py" .
+    ln -s "$mydir/grow_baobabs" .
+    cat > "$TMPFILE" <<EOF
+# output directory: /$eos_space/Baobab/$era/MC/v1/Ntuple
+# json file: <put here the path to the json file, /afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/...>
+
+# List here the dataset to process, one dataset per line, optionnally followed by a run specification
+# See https://twiki.cern.ch/twiki/bin/view/CMS/SmpVjBaobabProduction for the run specification syntax
+# Example:
+#  /SinglePhoton/Run2015C-PromptReco-v1/MINIAOD -256464
+#  /SinglePhoton/Run2015D-PromptReco-v3/MINIAOD 25663-
+EOF
+    eos cp "$TMPFILE" /eos/cms/"$eos_space"/Baobab/$era/$typ/v1/Catalogs/datasets.txt
+    ./grow_baobabs --catalog /"$eos_space"/Baobab/$era/$typ/v1/Catalogs/datasets.txt 
+    done
+)
+
+cat <<EOF
+
+**********************************************************************
+
+The four following working areas have been created on AFS:
+
+- $workdir/{baobab-prod,bonzai-prod}/$era/MC
+
+- $workdir/{baobab-prod,bonzai-prod}/$era/Data
+
+The two following area have been created on EOS:
+
+- /$eos_space/Baobab/$era
+
+**********************************************************************
+
+EOF

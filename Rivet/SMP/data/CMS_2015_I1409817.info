@@ -1,0 +1,35 @@
+Name: CMS_2015_I1409817
+Year: 2015
+Summary: Differential cross section of Z boson production in association with jets in proton-proton collisions at $\sqrt{s} = 13\,TeV$
+Experiment: CMS
+Collider: LHC
+InspireID: I1409817
+Status: CMS INTERNAL
+Authors:
+- Philippe Gras (philippe.gras@cern.ch)
+References:
+- http://cds.cern.ch/record/2114819
+- http://inspirehep.net/record/1409817
+RunInfo:
+  'Run MC generators with Z decaying leptonically into both electrons and muons at 13 TeV CoM energy.'
+NeedCrossSection: yes
+Beams: [p+, p+]
+Energies: [13000]
+Description:
+'Differential cross section measurements of the Z($\rightarrow\mu\mu$) boson production in association with jets are presented, using 13 TeV proton-proton collisions data recorded by the CMS detector at the LHC, corresponding to an integrated luminosity of 2.5 fb$^{-1}$. The cross sections are presented as a function of jet multiplicity, the jet transverse momenta, and the jet rapidity for different jet multiplicities. The cross section measurements are then compared with the predictions from a multileg next-to-leading-order Monte Carlo generator.'
+Cuts: 'First two leading electrons or muons with $p_T > 20$ GeV and $|\eta| < 2.4$
+     Dilepton invariant mass in the [71,111] GeV range
+     Jets $p_T > 30$ GeV and $|\eta| < 2.4$
+     $\Delta{R}($lepton,jet$) > 0.5$'
+BibKey: CMS:2015hfr
+BibTeX: '@article{CMS:2015hfr,
+      author         = "CMS Collaboration",
+      title          = "{Measurement of the differential cross section of Z boson
+                        production in association with jets in proton-proton
+                        collisions at $\sqrt{s} = 13$ TeV}",
+      collaboration  = "CMS",
+      year           = "2015",
+      reportNumber   = "CMS-PAS-SMP-15-010",
+      SLACcitation   = "%%CITATION = CMS-PAS-SMP-15-010;%%"
+}'
+

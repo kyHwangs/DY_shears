@@ -1,0 +1,16 @@
+#primary dataset: /WWTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/RunIISummer20UL16NanoAODAPVv9-106X_mcRun2_asymptotic_preVFP_v11-v1/NANOAODSIM
+* datatype: background
+* primary events: 1
+* primary files: 1
+* lumi: -1
+* sample xsec: 12.21
+
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/background/NanoBonzai28oct_bg_WWTo2L2Nu_preVFP/WWTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/NanoTestPost/211028_143141/0000/tree_1.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/background/NanoBonzai28oct_bg_WWTo2L2Nu_preVFP/WWTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/NanoTestPost/211028_143141/0000/tree_2.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/background/NanoBonzai28oct_bg_WWTo2L2Nu_preVFP/WWTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/NanoTestPost/211028_143141/0000/tree_3.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/background/NanoBonzai28oct_bg_WWTo2L2Nu_preVFP/WWTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/NanoTestPost/211028_143141/0000/tree_4.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/background/NanoBonzai28oct_bg_WWTo2L2Nu_preVFP/WWTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/NanoTestPost/211028_143141/0000/tree_5.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/background/NanoBonzai28oct_bg_WWTo2L2Nu_preVFP/WWTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/NanoTestPost/211028_143141/0000/tree_6.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/background/NanoBonzai28oct_bg_WWTo2L2Nu_preVFP/WWTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/NanoTestPost/211028_143141/0000/tree_7.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/background/NanoBonzai28oct_bg_WWTo2L2Nu_preVFP/WWTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/NanoTestPost/211028_143141/0000/tree_8.root
+/pnfs/iihe/cms/store/user/vandenbe/crab_bonzai/background/NanoBonzai28oct_bg_WWTo2L2Nu_preVFP/WWTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/NanoTestPost/211028_143141/0000/tree_9.root
