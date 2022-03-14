@@ -105,7 +105,7 @@ electrons:
 muons:
     # Pt cut [GeV]
     # Default value: 20
-    pt: 20
+    pt: 26
 
     # Eta cut
     # Default value: 2.4

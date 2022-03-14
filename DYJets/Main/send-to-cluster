@@ -22,7 +22,8 @@ output                = {job_log_file2}
 error                 = {job_log_file3}
 log                   = {job_log_file4} 
 requirements          = (OpSysAndVer =?= "CentOS7")
-+JobFlavour            = "nextweek"
+getenv                = True
++JobFlavour           = "nextweek"
 queue 1
 
 '''
@@ -42,7 +43,7 @@ set +e # Accept errors from now on
 # Setup CMS environment
 #eval `scramv1 runtime -sh` # cmsenv
 # Setup environment
-source lcg-env.sh #luienv
+# source lcg-env.sh #luienv
 
 # Setup proxy
 cp /user/vandenbe/x509up_u23118 /tmp || true
