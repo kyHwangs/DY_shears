@@ -186,10 +186,12 @@ mass bins: [ 10, 50, 76, 106, 170, 350, 1000 ]
 # of physics::trigger_mask for more details.
 # ["IsoMu24_or_IsoTkMu24", "CutBasedIdTight_and_PFIsoTight"]
 triggers B-F: |
-    IsoMu24_or_IsoTkMu24
+    HLT_IsoMu24,
+    HLT_IsoTkMu24
 
 triggers G-H: |
-    IsoMu24_or_IsoTkMu24
+    HLT_IsoMu24,
+    HLT_IsoTkMu24
 
 # List of available data/MC samples
 samples:
